@@ -11,9 +11,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.conf import settings
 import json
-from google import genai
+import os
+import google.generativeai as genai
 
-client = genai.Client()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 
 def aiapp_view(request):
@@ -21,10 +23,7 @@ def aiapp_view(request):
         data = json.loads(request.body)
         user_message = data.get("message")
 
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=user_message
-        )
+        response = model.generate_content(user_message)
         reply = response.text if hasattr(response, "text") else str(response)
         return JsonResponse({"reply": response.text})
 
