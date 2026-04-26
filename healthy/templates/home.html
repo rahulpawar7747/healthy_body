@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Healthy Body</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid px-4">
+
+    <a class="navbar-brand" href="#">Healthy Body</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/home/">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/BMI/">BMI</a></li>
+        <li class="nav-item"><a class="nav-link" href="/logout/">Logout</a></li>
+      </ul>
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-text">
+        <h1>Transform Your Life Today<br>Build a Strong & Healthy Body
+        </h1>
+        <p>Build strength, boost immunity and live a balanced lifestyle.</p>
+        <a href="/BMI/" class="btn">Calculate Your BMI</a>
+    </div>
+    <div class="hero-img">
+        <img src="https://images.unsplash.com/photo-1554284126-aa88f22d8b74" alt="Fitness">
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+        <div class="card1"><h2>Our Services</h2></div>
+    <div class="feature-container">
+
+        <div class="card">
+            <img src="{% static 'images/immunity.jpg' %}" alt="">
+            <h3>Immunity</h3>
+            <p>Nutrition plans to improve immune system naturally.</p>
+        </div>
+
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438" alt="">
+            <h3>Fitness</h3>
+            <p>Daily fitness tracking and long-term health guidance.</p>
+        </div>
+
+        <div class="card">
+            <img src="{% static 'images/strength.jpg' %}" alt="">
+            <h3>Strength</h3>
+            <p>Personalized workout routines to build muscle and endurance.</p>
+        </div>
+
+
+    </div>
+</section>
+
+<!-- BMI PROMO SECTION -->
+<section class="bmi-section">
+    <h1>Check Your BMI</h1>
+    <div class=".bmi-section .btn:hover">
+    <p>Track your body mass index and stay fit.</p>
+    <a href="/BMI/" class="btn">Start Now</a></li>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+    <div class="card1"><h2>What Our Users Say</h2></div>
+    <div class="testimonial-container">
+
+        <div class="testimonial">
+            <p>"This platform changed my lifestyle completely!"</p>
+            <h4>- Rahul</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"BMI tracker helped me stay motivated."</p>
+            <h4>- Sneha</h4>
+        </div>
+        <div class="testimonial">
+            <p>"I lost 5 kg in 2 months using this plan."</p>
+            <h4>- Aman</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"Workout plans are simple and very effective."</p>
+            <h4>- Priya</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"The immunity tips really improved my health."</p>
+            <h4>- Karan</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"Best fitness website I’ve ever used."</p>
+            <h4>- Neha</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"Very easy BMI calculator and accurate results."</p>
+            <h4>- Rohit</h4>
+        </div>
+
+        <div class="testimonial">
+            <p>"Clean design and very helpful content."</p>
+            <h4>- Anjali</h4>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<footer class="main-footer">
+    <div class="footer-container">
+
+        <!-- Logo & Address -->
+        <div class="footer-column">
+            <h2 class="footer-logo">Healthy Body</h2>
+            <p><strong>Corporate Address:</strong><br>
+            Indore, Madhya Pradesh</p>
+
+            <p><strong>Registered Address:</strong><br>Indore, MP</p>
+        </div>
+
+        <!-- Company -->
+        <div class="footer-column">
+            <h3>Web</h3>
+            <a href="/about/">About Us</a>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/contact/">Contact</a>
+        </div>
+
+        <!-- Explore -->
+        <div class="footer-column">
+            <h3>Explore</h3>
+            <a href="/BMI/">BMI Calculator</a>
+            <a href="/diet/">Diet</a>
+            <a href="/exercise/">exercise</a>
+        </div>
+
+        <!-- Support -->
+        <div class="footer-column">
+            <h3>Support</h3>
+            <a href="/help/">Help Center</a>
+            <a href="/Faq/">FAQs</a>
+            <a href="/Terms/">Terms</a>
+            <a href="/Feedback/">Feedback</a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        © 2026 Healthy Body | All Rights Reserved
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

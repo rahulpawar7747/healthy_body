@@ -1,0 +1,25 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Python Compiled Files
+__pycache__/
+*.pyc
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Environment Variables (Secrets)
+.env
+.venv
+
+# IDE Settings
+.vscode/
+.idea/
+
+# OS Specific
+.DS_Store
+Thumbs.db

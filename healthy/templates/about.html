@@ -1,0 +1,107 @@
+{% load static %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About - BMI Calculator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/BMI.css' %}">
+
+<style>
+
+.about-container{
+max-width:800px;
+margin:auto;
+background:rgb(79,114,134);
+padding:40px;
+border-radius:15px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+color:white;
+line-height:1.7;
+}
+
+.about-container h1{
+text-align:center;
+margin-bottom:25px;
+}
+
+.about-container h2{
+margin-top:20px;
+margin-bottom:10px;
+}
+
+.about-container p{
+font-size:16px;
+}
+
+.about-container ul{
+margin-left:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="about-container">
+
+<h1>About BMI Calculator</h1>
+
+<p>
+The <b>Body Mass Index (BMI) Calculator</b> is a web-based health tool that helps users determine whether their body weight is healthy based on their height and weight.
+BMI is widely used as a quick method to classify individuals into different health categories.
+</p>
+
+<h2>How BMI is Calculated</h2>
+
+<p>
+BMI is calculated using the following formula:
+</p>
+
+<p><b>BMI = Weight (kg) / Height² (m)</b></p>
+
+<p>
+Based on the calculated BMI value, the system determines the user's health category.
+</p>
+
+<h2>BMI Categories</h2>
+
+<ul>
+<li>Underweight – BMI less than 18.5</li>
+<li>Normal Weight – BMI between 18.5 and 24.9</li>
+<li>Overweight – BMI between 25 and 29.9</li>
+<li>Obese – BMI 30 or higher</li>
+</ul>
+
+<h2>Additional Features</h2>
+
+<p>
+In addition to calculating BMI, this system also provides personalized health suggestions.
+Based on the BMI category, the application recommends suitable <b>diet plans</b> and <b>exercise routines</b> to help users improve or maintain their health.
+</p>
+
+<ul>
+<li>Healthy diet suggestions based on BMI category</li>
+<li>Recommended exercises for fitness improvement</li>
+<li>Weight management guidance</li>
+</ul>
+
+<h2>Purpose of the Project</h2>
+
+<p>
+The main goal of this project is to help users understand their body condition and guide them towards a healthier lifestyle by providing BMI calculation along with diet and exercise recommendations.
+</p>
+
+<h2>Developer</h2>
+
+<p>
+Developed by <b>Rahul Pawar</b>using HTML, CSS, and Django and python.
+</p>
+</body>
+</html>
+{% endblock %}
+{% load static %}

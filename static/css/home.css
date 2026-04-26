@@ -1,0 +1,304 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+}
+
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:20px 80px;
+    background:#1f2a38;
+    color:white;
+}
+
+.navbar a{
+    color:white;
+    margin-left:20px;
+    text-decoration:none;
+}
+
+.navbar a:hover{
+    color:#00c896;
+}
+
+/* HERO */
+.hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:60px;
+    background:linear-gradient(to right,#1f2a38,#2d4b63);
+    color:white;
+}
+.hero-text .btn{
+    display:inline-block;
+    margin-top:15px;
+    background:#00a0c8;
+    color:#1f2a38;
+    font-weight:bold;
+    padding:14px 30px;
+    border-radius:30px;
+    transition:0.3s;
+}
+.hero-text .btn:hover{
+    background:white;
+    color:#1f2a38;
+}
+.hero-text h1{
+    font-size:45px;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    margin-bottom:25px;
+}
+
+.hero-img img{
+    width:400px;
+    border-radius:15px;
+}
+
+/* BUTTONS */
+.btn{
+    padding:12px 25px;
+    background:#00c896;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.btn-dark{
+    padding:12px 25px;
+    background:#073f55;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+/* FEATURES */
+.features{
+    text-align:center;
+    padding:60px;
+}
+
+.feature-container{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-top:40px;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    width:350px;
+    box-shadow:0 5px 15px rgba(190, 178, 187, 0.664);
+    transition:0.3s;
+}
+
+.card img{
+    width:100%;
+    border-radius:20px;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+/* BMI SECTION */
+.bmi-section{
+    text-align:center;
+    padding:40px;
+    background:#1f2a38;
+    color:white;
+}
+.bmi-section .btn{
+    background:#00c3ff9f;
+    color:white;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.bmi-section .btn:hover{
+    background:#cccccca9;
+    color:white;
+}
+
+/* TESTIMONIALS */
+.testimonials{
+    padding:60px;
+    text-align:center;
+}
+
+.testimonial-container{
+    display:flex;
+    flex-wrap:wrap;   
+    justify-content:center;
+    gap:30px;
+    margin-top:30px;
+}
+.testimonial{
+    transition:0.3s;
+}
+
+.testimonial:hover{
+    transform:translateY(-8px);
+}
+
+.testimonial{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    width:300px;
+    box-shadow:0 5px 15px rgba(17, 165, 128, 0.322);
+}
+
+/* FOOTER */
+.main-footer{
+    background:#0f1720;
+    color:white;
+    padding:30px 150px 20px;
+}
+
+.footer-container{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:40px;
+}
+
+.footer-column{
+    display:flex;
+    flex-direction:column;
+    min-width:200px;
+}
+
+.footer-column h3{
+    margin-bottom:15px;
+    color:#00c896;
+}
+
+.footer-column a{
+    color:#ccc;
+    text-decoration:none;
+    margin-bottom:8px;
+    transition:0.3s;
+}
+
+.footer-column a:hover{
+    color:#00c896;
+}
+
+.footer-logo{
+    color:#00c896;
+    margin-bottom:15px;
+}
+
+.footer-bottom{
+    text-align:center;
+    margin-top:40px;
+    padding-top:20px;
+    border-top:1px solid #333;
+    font-size:14px;
+    color:#aaa;
+}
+
+.footer-column a:hover{
+    transform:translateX(5px);
+}
+
+
+
+/* ============================= */
+/* USER SECTION (Exercise Table) */
+/* ============================= */
+
+.user-section{
+    padding:60px 20px;
+    background:linear-gradient(135deg,#1f2a38,#1f2a38);
+    text-align:center;
+}
+
+/* Heading */
+.user-section h2{
+    font-size:32px;
+    margin-bottom:10px;
+    color:white;
+}
+
+.user-section p{
+    color:white;
+    margin-bottom:30px;
+}
+
+/* Table */
+.user-section table{
+    width:20%;          /* table chhoti hogi */
+    margin: 2px;        /* center me aa jayegi */
+    background:white;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+/* Header */
+.user-section thead{
+    background:#1f2a38;
+    color:white;
+    font-size:20px;
+}
+
+/* Table Cells */
+.user-section td{
+    padding:50px;
+    font-size:14px;
+}
+/* Name */
+.user-section b{
+    font-size:18px;
+    color:#333;
+}
+
+/* Buttons */
+.user-section .btn{
+    margin-top:8px;
+    border-radius:20px;
+    padding:6px 18px;
+    font-size:14px;
+}
+
+/* Button Hover */
+.user-section .btn:hover{
+    transform:scale(1.05);
+}
+/* Table box background */
+.user-section table td{
+    background:#95b1ca;   /* yaha color change kar sakte ho */
+}
+
+/* Header background */
+.user-section table th{
+    background:#596580;
+    color:rgb(224, 220, 220);
+}
+
+.table-wrapper{
+    display:flex;
+    justify-content:center;
+    gap: 10px;       /* tables ke beech space */
+}
+
+/* Mobile Responsive */
+@media (max-width:768px){
+    .user-section table{
+        font-size:14px;
+    }
+
+}

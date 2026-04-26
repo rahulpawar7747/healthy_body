@@ -1,0 +1,15 @@
+.btn{
+    padding:12px 25px;
+    background:#00c896;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.btn-dark{
+    padding:12px 25px;
+    background:#073f55;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}

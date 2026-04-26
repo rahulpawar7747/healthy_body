@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+<title>BMI Calculator</title>
+
+<!-- Google Font -->
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/BMI.css' %}">
+</head>
+
+<body>
+<div class="landing-page-background"></div>
+<div class="container">
+
+    <h1>Body Mass Index (BMI)</h1>
+<form method="POST" action="{% url 'BMI' %}" class="bmi-form">
+
+    {% csrf_token %}
+
+    <input type="number" name="age" placeholder="Age">
+
+    <div class="gender">
+        <label>
+            <input type="radio" name="gender" value="Male" checked> Male
+        </label>
+        <label>
+            <input type="radio" name="gender" value="Female"> Female
+        </label>
+    </div>
+
+    <input type="number" name="weight" placeholder="Weight (kg)" required>
+    <input type="number" step="0.1" name="height" placeholder="Height (feet in 0.0)" required>
+    <button type="submit">Calculate BMI</button>
+    {% if bmi %}
+        <div class="result">
+            <b>BMI:</b> {{ bmi }} <br>
+            <b>Status:</b> {{ status }} <br>
+            <b>Age:</b> {{ age }} | <b>Gender:</b> {{ gender }}
+        </div>
+    {% endif %}
+</form>
+        <div class="result" id="result"></div>
+</div>
+</body>
+</html>
+
