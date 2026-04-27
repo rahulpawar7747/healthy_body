@@ -5,11 +5,117 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 body{
-    /* background:#f4f6f9; */
+    /* background:rgb(139, 12, 12); */
     background : url("/static/images/1234.jpg") no-repeat center center/cover;
     background-size: cover;
 }
+/* ===== AI Diet Form Card ===== */
+.ai-form{
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Inputs & Select */
+.ai-form input,
+.ai-form select{
+    height: 45px;
+    padding: 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+    width: 100%;
+}
+
+.ai-form input:focus,
+.ai-form select:focus{
+    border-color: #222;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+}
+
+/* Button */
+.ai-form button{
+    height: 45px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.ai-form button:hover{
+    background: #000;
+    transform: translateY(-1px);
+}
+
+/* Chat box */
+#chat-box{
+    max-width: 900px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* AI table styling */
+.ai-reply table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.ai-reply th,
+.ai-reply td{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.ai-reply th{
+    background: #222;
+    color: #fff;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px){
+    .ai-form{
+        grid-template-columns: 1fr;
+    }
+}
+#exercise-box table{
+    width:100%;
+    border-collapse: collapse;
+    margin-top:15px;
+    background:#fff;
+}
+
+#exercise-box th,
+#exercise-box td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:center;
+}
+
+#exercise-box th{
+    background:#222;
+    color:#fff;
+    font-weight:600;
+}
 /* NAVBAR */
 .navbar{
     display:flex;
@@ -35,10 +141,10 @@ body{
     align-items:center;
     justify-content:space-between;
     padding:60px;
-    /* background:linear-gradient(to right,#1f2a38,#2d4b63); */
+    background:linear-gradient(to right,#1f2a38,#2d4b63);
     color:white;
-    /*background: rgba(31,42,56,0.65);*/
-    backdrop-filter: blur(0px);
+    background: #1f2a38;
+    /* backdrop-filter: blur(0px); */
 }
 .hero1{
     display:flex;
@@ -87,7 +193,7 @@ body{
 }
 
 .hero-img img{
-    /*width:400px;*/
+    width:400px;
     border-radius:15px;
     width:100%;
     max-width:400px;
@@ -156,6 +262,110 @@ body{
     transition:0.3s;
     margin: 35px auto;   /* center */
 }
+/* ===== Heading ===== */
+.card1 h2{
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 600;
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Diet Box (Markdown Content) ===== */
+#diet-box{
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Paragraphs */
+#diet-box p{
+    margin-bottom: 14px;
+}
+
+/* Headings from markdown */
+#diet-box h1,
+#diet-box h2,
+#diet-box h3{
+    margin-top: 22px;
+    margin-bottom: 12px;
+    color: #1a237e;
+    font-weight: 600;
+}
+
+/* Lists */
+#diet-box ul{
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+#diet-box li{
+    margin-bottom: 8px;
+}
+
+/* Bold text */
+#diet-box strong{
+    color: #000;
+}
+
+/* Tables (AI often returns tables) */
+#diet-box table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 15px;
+}
+
+#diet-box th,
+#diet-box td{
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+#diet-box th{
+    background: #222;
+    font-weight: 600;
+    color:#fff;
+}
+
+/* Code blocks if AI returns */
+#diet-box pre{
+    background: #f4f6f9;
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+#diet-box code{
+    background: #eef1f4;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width:768px){
+    .card1{
+        padding: 20px;
+    }
+    #diet-box{
+        font-size: 15px;
+    }
+}
+.card3{
+    background:white;
+    padding:5px;
+    border-radius:25px;
+    width:300px;
+    height: 60px;   
+    box-shadow:0 5px 15px rgba(190, 178, 187, 0.664);
+    transition:0.3s;
+    margin: 20px auto;   /* center */
+    text-align:center;
+    display: flex;
+    justify-content: center; /*horizontal center*/
+    align-items: center;    /* vertical center*/  
+}
 .card img{
     width:100%;
     border-radius:20px;
@@ -185,6 +395,47 @@ body{
     background:white;
     color:black;
 }
+/* DE SECTION */
+.DE-section{
+    text-align: center;
+    padding: 50px;
+    background: #1f2a38;
+    color: white;
+}
+
+.DE-section h1{
+    margin-bottom: 15px;
+    font-size: 32px;
+}
+
+.DE-section p{
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.de-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.DE-section .btn{
+    padding: 12px 28px;
+    background: #00c3ff9f;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.DE-section .btn:hover{
+    background: white;
+    color: black;
+    transform: translateY(-3px);
+}
+
 /* TESTIMONIALS */
 .testimonials{
     padding:60px;

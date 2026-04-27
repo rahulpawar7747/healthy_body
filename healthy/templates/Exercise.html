@@ -13,7 +13,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid px-4">
 
-    <a class="navbar-brand" href="#">Healthy Body</a>
+    <a class="navbar-brand" href="/home/">Healthy Body</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -28,87 +28,28 @@
   </div>
 </nav>
 <div class="container my-5">
-    <div class="card1 mb-4 shadow">
-        <h1 class="text-center mb-4">Exercise Plans According to Body Type</h1>
-    </div>
+  <div class="card1 mb-4 shadow">
+    <h2>Your AI Exercise Plan</h2>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    {% if plan %}
+      <div id="exercise-box"></div>
 
-    <!-- NORMAL -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-success text-white text-center">
-            <h4>Normal Body Exercise (Maintain Fitness)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Day</th><th>Workout</th></tr>
-                <tr><td>Mon</td><td>30 min Jogging + Pushups + Squats</td></tr>
-                <tr><td>Tue</td><td>Yoga + Stretching (Full Body)</td></tr>
-                <tr><td>Wed</td><td>Core Workout (Plank, Crunches, Leg Raise)</td></tr>
-                <tr><td>Thu</td><td>Brisk Walking 40 min</td></tr>
-                <tr><td>Fri</td><td>Upper Body (Pushups, Dips, Shoulder taps)</td></tr>
-                <tr><td>Sat</td><td>Lower Body (Lunges, Squats, Glute bridge)</td></tr>
-                <tr><td>Sun</td><td>Rest / Light Walk</td></tr>
-            </table>
-        </div>
-    </div>
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          marked.setOptions({
+              gfm: true,
+              breaks: true
+          });
 
-    <!-- UNDERWEIGHT -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-primary text-white text-center">
-            <h4>Underweight Exercise (Muscle Gain)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Day</th><th>Workout</th></tr>
-                <tr><td>Mon</td><td>Chest + Triceps (Pushups, Bench dips)</td></tr>
-                <tr><td>Tue</td><td>Back + Biceps (Rows, Dumbbell curls)</td></tr>
-                <tr><td>Wed</td><td>Leg Day (Squats, Lunges, Calf raises)</td></tr>
-                <tr><td>Thu</td><td>Shoulders + Abs</td></tr>
-                <tr><td>Fri</td><td>Full Body Strength Training</td></tr>
-                <tr><td>Sat</td><td>Yoga & Stretching</td></tr>
-                <tr><td>Sun</td><td>Rest</td></tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- OVERWEIGHT -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-warning text-dark text-center">
-            <h4>Overweight Exercise (Fat Burn)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Day</th><th>Workout</th></tr>
-                <tr><td>Mon</td><td>45 min Brisk Walking</td></tr>
-                <tr><td>Tue</td><td>Low Impact Cardio + Step Touch</td></tr>
-                <tr><td>Wed</td><td>Chair Squats + Wall Pushups</td></tr>
-                <tr><td>Thu</td><td>Core (Standing crunch, Seated leg raise)</td></tr>
-                <tr><td>Fri</td><td>Yoga for Fat Loss</td></tr>
-                <tr><td>Sat</td><td>Walking + Light Jogging</td></tr>
-                <tr><td>Sun</td><td>Rest</td></tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- OBESE -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-danger text-white text-center">
-            <h4>Obese Exercise (Strict Weight Loss)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Day</th><th>Workout</th></tr>
-                <tr><td>Mon</td><td>Slow Walking 30 min</td></tr>
-                <tr><td>Tue</td><td>Chair Exercises + Arm rotations</td></tr>
-                <tr><td>Wed</td><td>Low Impact Cardio (No jumping)</td></tr>
-                <tr><td>Thu</td><td>Stretching + Breathing Yoga</td></tr>
-                <tr><td>Fri</td><td>Seated Leg Raises + Wall Pushups</td></tr>
-                <tr><td>Sat</td><td>Walking 40 min</td></tr>
-                <tr><td>Sun</td><td>Rest</td></tr>
-            </table>
-        </div>
-    </div>
-
+          const markdown = `{{ plan.exercise_reply|escapejs }}`;
+          document.getElementById("exercise-box").innerHTML = marked.parse(markdown);
+      });
+      </script>
+    {% else %}
+      <p>No exercise plan generated yet. Go to AI Planner first.</p>
+    {% endif %}
+  </div>
 </div>
-
 </body>
 </html>

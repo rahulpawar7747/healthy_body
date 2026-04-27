@@ -13,7 +13,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid px-4">
 
-    <a class="navbar-brand" href="#">Healthy Body</a>
+    <a class="navbar-brand" href="/home/">Healthy Body</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -43,37 +43,62 @@
     </div>
 </section>
 
-        <h2>AI Diet Plan</h2>
-        <ul>
-          {% for d in diet_plan %}
-            <li>{{ d }}</li>
-          {% endfor %}
-        </ul>
+<div class="container my-5">
+    <div class="card3 mb-4 shadow">
+        <h3 class="text-center mt-3">AI Diet Planner</h3></div></div>
 
-        <h2>AI Exercise Plan</h2>
-        <ul>
-          {% for e in exercise_plan %}
-            <li>{{ e }}</li>
-          {% endfor %}
-        </ul>
-  <h1>Ask me anything</h1>
-  <div id="chat-box"></div>
-  <input type="text" id="user-input" placeholder="Type your message..." autofocus>
-  <button onclick="sendMessage()">Send</button>
+<div class="ai-form">
+    <input type="number" id="budget" placeholder="Enter your budget per day (₹)">
+    
+    <select id="foodType">
+        <option value="">Select Veg / Non-Veg</option>
+        <option value="Vegetarian">Vegetarian</option>
+        <option value="Non-Vegetarian">Non-Vegetarian</option>
+    </select>
+    <select id ="bodyGoal">
+        <option value="">Select body goal</option>
+        <option value="Muscle gain">Muscle gain</option>
+        <option value="Lean & Athletic body">Lean & Athletic body</option>
+        <option value="Weight loss">Weight loss</option>
+        <option value="Bulky Body">Bulky Body</option>
+        <option value="Overall fitness">Overall fitness</option>
+    </select>
+
+    <input type="text" id="user-input" placeholder="Any extra preference? (optional)">
+    
+    <button onclick="sendMessage()">Get Plans</button>
+</div>
+
+<div id="chat-box" class="mt-4"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 <script>
 function getCSRFToken() {
     return document.cookie.split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
+        .find(row => row.startsWith('csrftoken='))?.split('=')[1];
 }
 
 async function sendMessage() {
-  const input = document.getElementById("user-input");
-  const message = input.value;
-  input.value = "";
+  const budget = document.getElementById("budget").value;
+  const foodType = document.getElementById("foodType").value;
+  const bodyGoal = document.getElementById("bodyGoal").value;
+  const extra = document.getElementById("user-input").value;
+
+if(!budget || !foodType){
+    alert("Please fill all fields");
+    return;
+}
+
+const message = `
+My budget is ₹${budget} per day.
+I am ${foodType}.
+My body goal is ${bodyGoal}.
+${extra}
+`;
 
   const chatBox = document.getElementById("chat-box");
-  chatBox.innerHTML += `<p><b>You:</b> ${message}</p>`;
+  chatBox.innerHTML = `<p><b>You:</b> Budget ₹${budget}, ${foodType}</p>`;
 
   const res = await fetch("/aiapp/", {
     method: "POST",
@@ -85,99 +110,10 @@ async function sendMessage() {
   });
 
   const data = await res.json();
-  chatBox.innerHTML += `<p><b>Bot:</b> ${data.reply}</p>`;
+  const html = marked.parse(data.reply);
+  chatBox.innerHTML += `<div class="ai-reply">${html}</div>`;
 }
 </script>
-
-<section class="user-section">
-    <section class="bmi-section"><h1>If you want to gain weight
-        <a href="{% url 'weight_gain' %}" class="btn btn-success ms-2 custom-btn">
-            Click Here
-        </a></h1>
-    <h1 class="text-center">If you want to maintain your weight follow the diet and exercise below</h1>
-    <p class="text-center">Follow it regularly for better results.</p></section>
-
-    <div class="card1 p-3 mb-4">
-        <h3 class="text-center">Warm-up routine before workout</h3>
-        <table class="table table-bordered text-center">
-            <tr><th>Workout</th><th>video link</th></tr>
-            <tr><td><ol><li>Neck circles <br></li>
-                    <li>Shoulder rotation<br></li>
-                    <li>Arm circles<br></li>
-                    <li>Arm circles opposite directions<br></li>
-                    <li>Elbow circles<br></li>
-                    <li>Wrist rotations<br></li>
-                    <li>Hip rotation<br></li>
-                    <li>Body circles<br></li>
-                    <li>Inner tie and oblique<br></li>
-                    <li>Lower back and hammer strings<br></li>
-                    <li>Lounge tap<br></li>
-                    <li>Side static lunge<br></li>
-                    <li>Front static lunge<br></li>
-                    <li>Squat cross arms<br></li>
-                    <li>Standing crunch<br></li>
-                    <li>Butterflyes<br></li>
-                    <li>Jumping jacks<br></li></ol>
-            </td><td><br><br><br><br><br><br><br><br>
-            <b>For batter <br>understanding</b><br>
-            <a href="https://youtu.be/VecbXgWY0DI?si=l2tXEjnLDH-ec53y" target="_blank" class="btn btn-danger btn-sm mt-2">Watch Video</a></td></tr>
-        </table>
-    </div>
-
-
-    <div class="card1 p-3 mb-4">
-      <div class="card-header bg-success text-white text-center"><h3 class="text-center">Exercises</h3></div>
-        <table class="table table-bordered text-center">
-            <tr><th>Day</th><th>Workout</th><th>Details</th><th>video link</th></tr>
-            <tr><td>Mon</td><td>Full Body</td><td>legs, glutes, core, arms, shoulders, chest, back</td>
-            <td><b>For batter <br>understanding</b><br>
-            <a href="https://youtu.be/ZIjdwUC6aaQ?si=7wjplQo6IpMLaClT" target="_blank" class="btn btn-danger btn-sm mt-2">Watch Video</a></td></tr>
-            <tr><td>Tue</td><td>Uper Body</td><td>chest, shoulders, arms & back</td>
-            <td><b>For batter <br>understanding</b><br>
-            <a href="https://youtu.be/qOjXsxi2MG8?si=tSpzyE6zK-jSFeUw" target="_blank" class="btn btn-danger btn-sm mt-2">Watch Video</a></td></tr>
-            <tr><td>Tue</td><td>Lower Body</td><td>Static Lunge,Squats,Curtsy Lunge</td>
-            <td><b>For batter <br>understanding</b><br>
-            <a href="https://youtu.be/X0xt0fYTZv8?si=8qzya4tYfuVn-QTy" target="_blank" class="btn btn-danger btn-sm mt-2">Watch Video</a></td></tr>
-            <tr><td>Thu</td><td>ABS</td><td>Leg Switches,Reverse Crunch + Leg Opener,Scissor Crossovers</td>
-            <td><b>For batter <br>understanding</b><br>
-            <a href="https://youtu.be/BdhqubW1GJE?si=Tn0AWeWqh0lvMnzs" target="_blank" class="btn btn-danger btn-sm mt-2">Watch Video</a></td></tr>
-            <tr><td>Fri</td><td>Cardio</td><td> Jumping + Power Jacks,Cross Mountain Climbers,Air Squats,Plank T-Rotations</td>
-            <td><b>For batter <br>understanding</b><br>
-            <a href="https://youtu.be/zibJBrpA8pw?si=JWCSgWlMaYcJwxqX" target="_blank" class="btn btn-danger btn-sm mt-2">Watch Video</a></td></tr>
-            <tr><td>Sat</td><td>yoga</td><td>Muladhara Chakra,Swadishthana Chakra,Manipura Chakra,Anahata Chakra,Sahasrara Chakra</td>
-            <td><b>For batter <br>understanding</b><br>
-            <a href="https://youtu.be/24RYHE3HlCQ?si=uurgwVJV0NTjFBsx" target="_blank" class="btn btn-danger btn-sm mt-2">Watch Video</a></td></tr>
-            <tr><td>Sun</td><td>Rest</td><td>Recovery</td><td>good luck</td></tr>
-        </table>
-    </div>
-    <!-- DIET TABLE -->
-    <div class="card1 p-3">
-        <div class="card-header bg-success text-white text-center"><h3 class="text-center">Daily Healthy Diet</h3></div>
-        <table class="table table-bordered text-center">
-            <tr><th>Time</th><th>What To Eat</th><th>Video</th></tr>
-            <tr><td>Morning</td><td><b>Warm water + Almonds,Egg/Paneer</b></td>
-                 <td>
-                    <a href="https://youtu.be/E-Nn08WSdoY?si=QarPKmq0b3natn2D" target="_blank" class="btn btn-danger btn-sm">Watch</a>
-                </td></tr>
-            <tr><td>Breakfast</td><td><b>Oats/Poha,Fruit</b></td>
-                <td>
-                    <a href="https://youtu.be/QCWDY80L6-w?si=YZNiUbOW3PfH-UZx" target="_blank" class="btn btn-danger btn-sm">Watch</a>
-                </td></tr>
-            <tr><td>Lunch</td><td><b>Chapati, Dal, Vegetables, Salad</b></td>
-                <td>
-                    <a href="https://youtube.com/shorts/4NfoJwZu-DQ?si=YJuy6QghsSLxEcFF" target="_blank" class="btn btn-danger btn-sm">Watch</a>
-                </td></tr>
-            <tr><td>Evening</td><td><b>Green tea + Chana</b></td>
-                <td>
-                    <a href="https://youtube.com/shorts/3YpyAB116XY?si=sw6PprFpD1BWN4y4" target="_blank" class="btn btn-danger btn-sm">Watch</a>
-                </td></tr>
-            <tr><td>Dinner</td><td><b>Light food, Chapati + Veg</b></td>
-                <td>
-                    <a href="https://youtube.com/shorts/nDCJFf8jQ14?si=RFfY0jmVb2D-xhqP" target="_blank" class="btn btn-danger btn-sm">Watch</a>
-                </td></tr>
-        </table>
-    </div>
-</section>
 <!-- FOOTER -->
 <footer>
 <footer class="main-footer">

@@ -13,7 +13,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid px-4">
 
-    <a class="navbar-brand" href="#">Healthy Body</a>
+    <a class="navbar-brand" href="/home/">Healthy Body</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -29,80 +29,27 @@
 </nav>
 <div class="container my-5">
           <div class="card1 mb-4 shadow"><h2>Your AI Diet Plan</h2>
-<p>{{ plan.diet_plan }}</p>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-<h2>Your AI Exercise Plan</h2>
-<p>{{ plan.exercise_plan }}</p></div>
-    <div class="card1 mb-4 shadow"><h1 class="text-center mb-5">Diet Plans According to Body Type</h1></div>
+        {% if diet %}
+        <div id="diet-box"></div>
 
-    <!-- NORMAL -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-success text-white text-center">
-            <h4>Normal Body Diet (Maintain Weight)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Time</th><th>Diet</th></tr>
-                <tr><td>Morning</td><td>Warm water + Almonds</td></tr>
-                <tr><td>Breakfast</td><td>Poha/Oats + Fruit + Eggs/Paneer</td></tr>
-                <tr><td>Lunch</td><td>Chapati, Dal, Veg, Salad</td></tr>
-                <tr><td>Evening</td><td>Green Tea + Chana</td></tr>
-                <tr><td>Dinner</td><td>Light food, Chapati + Veg</td></tr>
-            </table>
-        </div>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+              marked.setOptions({
+              gfm: true,
+              breaks: true
+          });
+            const markdown = `{{ diet.ai_reply|escapejs }}`;
+            document.getElementById("diet-box").innerHTML = marked.parse(markdown);
+        });
+        </script>
+
+        {% else %}
+        <p>No diet plan generated yet. Go to AI Planner first.</p>
+        {% endif %}
     </div>
-
-    <!-- UNDERWEIGHT -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-primary text-white text-center">
-            <h4>Underweight Diet (Weight Gain)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Time</th><th>Diet</th></tr>
-                <tr><td>Morning</td><td>Milk + Banana + Dates + Almonds</td></tr>
-                <tr><td>Breakfast</td><td>Oats with Peanut Butter + Omelette</td></tr>
-                <tr><td>Lunch</td><td>Rice, Chapati, Dal, Paneer, Salad</td></tr>
-                <tr><td>Evening</td><td>Shake + Sprouts</td></tr>
-                <tr><td>Dinner</td><td>Chapati + Veg + Paneer/Chicken</td></tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- OVERWEIGHT -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-warning text-dark text-center">
-            <h4>Overweight Diet (Fat Loss)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Time</th><th>Diet</th></tr>
-                <tr><td>Morning</td><td>Warm water + Lemon</td></tr>
-                <tr><td>Breakfast</td><td>Oats + Boiled Eggs/Fruit</td></tr>
-                <tr><td>Lunch</td><td>2 Chapati + Dal + Veg + Salad</td></tr>
-                <tr><td>Evening</td><td>Green Tea + Roasted Chana</td></tr>
-                <tr><td>Dinner</td><td>Soup + Salad</td></tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- OBESE -->
-    <div class="card1 mb-4 shadow">
-        <div class="card-header bg-danger text-white text-center">
-            <h4>Obese Diet (Strict Weight Loss)</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered text-center">
-                <tr><th>Time</th><th>Diet</th></tr>
-                <tr><td>Morning</td><td>Warm water + Lemon + Honey</td></tr>
-                <tr><td>Breakfast</td><td>Oats + Fruit + Boiled Eggs</td></tr>
-                <tr><td>Lunch</td><td>2 Chapati + Dal + Veg + Salad</td></tr>
-                <tr><td>Evening</td><td>Green Tea + Sprouts</td></tr>
-                <tr><td>Dinner</td><td>Only Soup + Salad (No roti/rice)</td></tr>
-            </table>
-        </div>
-    </div>
-
 </div>
 </body>
 </html>

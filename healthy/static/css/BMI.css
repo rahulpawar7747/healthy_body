@@ -8,14 +8,11 @@
     font-family: 'Poppins', Arial, sans-serif;
 }
 
-/* ===== Full Screen Background ===== */
+/* ===== Page Layout Fix ===== */
 body{
     min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#0b1b2b;
     overflow-x:hidden;
+    background:#0b1b2b;
 }
 
 /* Background Image */
@@ -34,21 +31,34 @@ body{
     background:rgba(0,0,0,0.65);
 }
 
-/* ===== Glass Container / Form ===== */
-.container,
+/* ===== Center Area (navbar ke neeche) ===== */
+.container{
+    min-height: calc(100vh - 80px);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px 15px;
+}
+
+/* ===== Glass Form Card ===== */
 form{
     width:95%;
-    max-width:400px;
+    max-width:420px;
     padding:35px;
     border-radius:15px;
-    background: rgba(255, 255, 255, 0.05) !important;
-    border:1px solid rgba(255,255,255,0.15);
-    box-shadow:0 15px 35px rgba(0,0,0,0.5);
-    color:white;
-    backdrop-filter: blur(4px) !important;
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.18);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+    /* background: rgba(255, 255, 255, 0.06);
+    border:1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); */
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    color: black;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.45);
+
+    display:flex;           /* ✅ add */
+    flex-direction:column; /* ✅ add */
+    gap:16px; 
 }
 
 /* ===== Heading ===== */
@@ -69,11 +79,12 @@ label{
 input{
     width:100%;
     padding:12px;
-    margin-top:8px;
-    border-radius:6px;
-    border:1px solid rgba(255,255,255,0.2);
-    background:rgba(255,255,255,0.07);
-    color:white;
+    border-radius:12px;
+    /* border:1px solid rgba(255,255,255,0.2); */
+    /* background:rgba(255,255,255,0.07); */
+    color: black;
+    background: #f8f8f8;
+    border: 1px solid #ccc;
     font-size:14px;
     transition:0.3s;
 }
@@ -85,9 +96,8 @@ input:focus{
 }
 
 ::placeholder{
-    color:#ddd;
+    color: #777;
 }
-
 /* ===== Gender Radio ===== */
 .gender{
     margin-top:10px;
@@ -101,17 +111,15 @@ input:focus{
 
 /* ===== Button ===== */
 button{
-    width:100%;
-    padding:13px;
-    margin-top:25px;
-    border:none;
-    border-radius:6px;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    background:linear-gradient(45deg,#4facfe,#00f2fe);
-    color:#000;
-    transition:0.3s;
+    margin-top: 50px;
+    width: 100%;
+    background-color:black;
+    color: white;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 button:hover{
@@ -125,6 +133,9 @@ button:hover{
     font-size:18px;
     font-weight:bold;
     text-align:center;
+    padding:12px;
+    border-radius:8px;
+    background:rgba(0,0,0,0.35);
 }
 
 .category{
@@ -146,7 +157,7 @@ button:hover{
 
 /* ===== Responsive Fix ===== */
 @media(max-width:480px){
-    .container, form{
-        padding:25px;
+    form{
+        padding:25px 20px;
     }
 }

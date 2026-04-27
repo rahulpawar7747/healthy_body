@@ -13,21 +13,137 @@ from django.conf import settings
 import json
 import os
 import google.generativeai as genai
+from .models import UserDietPlan,BMIRecord,UserHealthPlan
+import re
+
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 
-
+@login_required(login_url='login')
+# @csrf_exempt
 def aiapp_view(request):
     if request.method == "POST":
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except:
+            return JsonResponse({"reply": "Invalid request"}, status=400)
         user_message = data.get("message")
 
-        response = model.generate_content(user_message)
-        reply = response.text if hasattr(response, "text") else str(response)
-        return JsonResponse({"reply": response.text})
+        bmi = request.session.get("bmi", "")
+        status = request.session.get("status", "")
+        age = request.session.get("age", "")
+        gender = request.session.get("gender", "")
+        # Budget aur food type message se nikaalo
+        budget_match = re.search(r'\d+', user_message)
+        budget = int(budget_match.group()) if budget_match else 0
+        food_type = "Vegetarian" if "vegetarian" in user_message.lower() else "Non-Vegetarian"
+        body_goal = "general fitness"
+        if "body goal is" in user_message.lower():
+            lines = user_message.splitlines()
+            for line in lines:
+                if "body goal is" in line.lower():
+                    body_goal = line.replace("My body goal is", "").strip()
+                    break
+        # body_goal = body_goal_match.group(1) if body_goal_match else "general fitness"
+
+          # AI ko proper instruction
+        full_prompt = f"""
+        You are a professional Indian health planner.
+
+        User Details:
+        BMI: {bmi}
+        Status: {status}
+        Age: {age}
+        Gender: {gender}
+        Budget: ₹{budget}
+        Food Type: {food_type}
+        Body Goal: {body_goal}
+        First give DIET PLAN in table format.
+        Then give EXERCISE PLAN in table format.
+
+        Strict Rules:
+        - Indian foods only
+        - Budget friendly
+        - Separate sections clearly as:
+
+        DIET PLAN:
+        (table)
+
+        EXERCISE PLAN:
+        (table)
+        """
+
+        try:
+            response = model.generate_content(full_prompt)
+            reply = response.text if hasattr(response, "text") else "No response from AI"
+        except Exception as e:
+            print("GEMINI ERROR:", str(e))
+            return JsonResponse({"reply": f"Error: {str(e)}"})
+
+        # 🔥 Split diet and exercise
+        diet_part = reply.split("EXERCISE PLAN:")[0]
+        if "EXERCISE PLAN:" in reply:
+            diet_part = reply.split("EXERCISE PLAN:")[0]
+            exercise_part = reply.split("EXERCISE PLAN:")[1]
+        else:
+            diet_part = reply
+            exercise_part = ""
+
+        # Save Diet
+        UserDietPlan.objects.update_or_create(
+            user=request.user,
+            defaults={
+                "bmi": bmi,
+                "status": status,
+                "budget": budget,
+                "food_type": food_type,
+                "body_goal": body_goal,
+                "ai_reply": diet_part
+            }
+        )
+
+        # Save Exercise
+        session_key = request.session.session_key
+        if not session_key:
+            request.session.create()
+            session_key = request.session.session_key
+
+        UserHealthPlan.objects.update_or_create(
+            user=request.user,
+            defaults={
+                "diet_reply": diet_part,
+                "exercise_reply": exercise_part
+            }
+        )
+
+        return JsonResponse({"reply": diet_part})
 
     return render(request, "Normal.html")
+
+def diet_view(request):
+    diet = UserDietPlan.objects.filter(user=request.user).first()
+    return render(request, "Diet.html", {"diet": diet})
+def diet(request):
+    bmi_id = request.session.get('bmi_id')
+
+    if bmi_id:
+        record = BMIRecord.objects.get(id=bmi_id)
+
+        context = {
+            "age": record.age,
+            "gender": record.gender,
+            "bmi": record.bmi,
+            "status": record.status
+        }
+
+        return render(request, "Diet.html", context)
+
+    return redirect('bmi')
+def exercise_page(request):
+    session_key = request.session.session_key
+    plan = UserHealthPlan.objects.filter(user=request.user).first()
+    return render(request, "Exercise.html", {"plan": plan})
 def login_page(request):
         if request.method=='POST':
             username=request.POST.get('username')
@@ -85,54 +201,55 @@ def LogoutPage(request):
 
 def bmi(request):
     context = {"progress": 0}
+
     if request.method == "POST":
-        age = request.POST.get("age")
+        age = int(request.POST.get("age"))
         gender = request.POST.get("gender")
-        weight = request.POST.get("weight")
-        height = request.POST.get("height")
+        weight = float(request.POST.get("weight"))
+        height = float(request.POST.get("height")) * 0.3048
 
-        if age and weight and height:
-            age = int(age)
-            weight = float(weight)
-            height = float(height) * 0.3048
+        bmi = round(weight / (height * height), 2)
 
-            bmi = round(weight / (height * height), 2)
-            request.session['age'] = age
-            request.session['gender'] = gender
-            request.session['weight'] = weight
-            request.session['height'] = height
-            request.session['bmi'] = bmi
-            if bmi < 18.5:
-                status = "Underweight"
-                progress = 25
+        if bmi < 18.5:
+            status = "Underweight"
+            progress = 25
+        elif bmi < 25:
+            status = "Normal"
+            progress = 50
+        elif bmi < 30:
+            status = "Overweight"
+            progress = 75
+        else:
+            status = "Obese"
+            progress = 100
 
-            elif bmi < 25:
-                status = "Normal"
-                progress = 50
+        # ✅ DATABASE ME SAVE
+        record = BMIRecord.objects.create(
+            age=age,
+            gender=gender,
+            weight=weight,
+            height=height,
+            bmi=bmi,
+            status=status
+        )
 
-            elif bmi < 30:
-                status = "Overweight"
-                progress = 75
+        # session optional (quick access ke liye)
+        request.session['bmi_id'] = record.id
+        request.session['bmi'] = bmi
+        request.session['status'] = status
+        request.session['age'] = age
+        request.session['gender'] = gender
 
-            else:
-                status = "Obese"
-                progress = 100
+        context = {
+            "bmi": bmi,
+            "status": status,
+            "progress": progress,
+            "age": age,
+            "gender": gender
+        }
 
-            context = {
-                "bmi": bmi,
-                "status": status,
-                "progress": progress,
-                "age": age,
-                "gender": gender
-            }
-            if status == "Underweight":
-                  return render(request, "Underweight.html",context)
-            if status == "Overweight":
-                  return render(request, "Overweight.html",context)
-            if status == "Normal":
-                  return render(request, "Normal.html",context)
-            if status == "Obese":
-                  return render(request, "Obese.html",context)
+        return render(request, f"{status}.html", context)
+
     return render(request, "BMI.html", context)
 def contact(request):
     if request.method == 'POST':
@@ -150,8 +267,6 @@ def contact(request):
 
 def weight_gain(request):
     return render(request, 'weight_gain.html')
-def diet(request):
-    return render(request, 'Diet.html')
 def exercise(request):
     return render(request, 'Exercise.html')
 def privacy(request):
