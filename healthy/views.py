@@ -15,11 +15,10 @@ import os
 import google.generativeai as genai
 from .models import UserDietPlan,BMIRecord,UserHealthPlan
 import re
-
+from .models import HealthProgress
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
-
 @login_required(login_url='login')
 # @csrf_exempt
 def aiapp_view(request):
@@ -78,7 +77,6 @@ def aiapp_view(request):
             response = model.generate_content(full_prompt)
             reply = response.text if hasattr(response, "text") else "No response from AI"
         except Exception as e:
-            print("GEMINI ERROR:", str(e))
             return JsonResponse({"reply": f"Error: {str(e)}"})
 
         # 🔥 Split diet and exercise
@@ -119,8 +117,23 @@ def aiapp_view(request):
 
         return JsonResponse({"reply": diet_part})
 
-    return render(request, "Normal.html")
+    return render(request, "ai_planner.html")
 
+@login_required
+def progress_chart(request):
+    data = HealthProgress.objects.filter(user=request.user).order_by('date')
+
+    dates = [d.date.strftime("%d-%b") for d in data]
+    bmis = [d.bmi for d in data]
+    weights = [d.weight for d in data]
+    goal_bmi = [22 for _ in data]  # ideal BMI line
+
+    return render(request, "progress.html", {
+            "dates_json": json.dumps(dates),
+            "bmis_json": json.dumps(bmis),
+            "weights_json": json.dumps(weights),
+            "goal_bmi_json": json.dumps(goal_bmi),
+        })
 def diet_view(request):
     diet = UserDietPlan.objects.filter(user=request.user).first()
     return render(request, "Diet.html", {"diet": diet})
@@ -233,6 +246,11 @@ def bmi(request):
             status=status
         )
 
+        HealthProgress.objects.create(
+            user=request.user,
+            bmi=bmi,
+            weight=weight
+        )
         # session optional (quick access ke liye)
         request.session['bmi_id'] = record.id
         request.session['bmi'] = bmi
@@ -248,7 +266,7 @@ def bmi(request):
             "gender": gender
         }
 
-        return render(request, f"{status}.html", context)
+        return render(request, "ai_planner.html", context)
 
     return render(request, "BMI.html", context)
 def contact(request):
@@ -283,9 +301,3 @@ def Terms(request):
      return render(request, 'Terms.html')
 def Feedback(request):
      return render(request, 'Feedback.html')
-def Underweight(request):
-    return render(request, "Underweight.html")
-def Overweight(request):
-    return render(request, "Overweight.html")
-def Obese(request):
-    return render(request, "Obese.html")

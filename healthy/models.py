@@ -24,3 +24,9 @@ class UserHealthPlan(models.Model):
     diet_reply = models.TextField()
     exercise_reply = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class HealthProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    bmi = models.FloatField()
+    weight = models.FloatField()
+    date = models.DateField(auto_now_add=True)

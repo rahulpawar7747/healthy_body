@@ -21,9 +21,7 @@ urlpatterns = [
     path('privacy/', views.privacy, name='privacy'),
     path("exercise/", views.exercise_page, name="exercise"),
     # path('Normal_ai/', views.Normal_ai, name='Normal_ai'),
-    path('Underweight/', views.Underweight, name='Underweight'),
-    path('Overweight/', views.Overweight, name='Overweight'),
-    path('Obese/', views.Obese, name='Obese'),
     path("aiapp/", aiapp_view, name="aiapp"),
     path("diet-plan/", views.diet_view, name="diet_plan"),
+    path("progress/", views.progress_chart, name="progress"),
 ]
