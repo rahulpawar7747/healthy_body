@@ -5,13 +5,11 @@ from .views import aiapp_view
 urlpatterns = [
     path('home/', views.home, name='home'),
     path('about/', views.About, name='about'),
-    path('Exercise/', views.Excercise, name='Exercise'),
     path('', views.SignuPage, name='signup'),
     path('signup/', views.SignuPage, name='signup'),
     path('login/', views.login_page, name='login'),
     path('logout/', views.LogoutPage, name='logout'),
     path('BMI/', views.bmi, name='BMI'),
-    path('weight-gain/', views.weight_gain, name='weight_gain'),
     path('contact/', views.contact, name='contact'),
     path('diet/', views.diet_view, name='diet'),
     path('help/', views.help, name='help'),
