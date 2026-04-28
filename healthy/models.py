@@ -31,3 +31,10 @@ class HealthProgress(models.Model):
     weight = models.FloatField()
     date = models.DateField(auto_now_add=True)
 
+
+
+class DietSchedule(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    breakfast_time = models.TimeField()
+    lunch_time = models.TimeField()
+    dinner_time = models.TimeField()

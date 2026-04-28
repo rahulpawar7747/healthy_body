@@ -16,6 +16,17 @@ import google.generativeai as genai
 from .models import UserDietPlan,BMIRecord,UserHealthPlan
 import re
 from .models import HealthProgress
+from .utils import send_health_mail
+from datetime import time
+from .models import DietSchedule
+def ai_diet_view(request):
+    send_health_mail(
+        request.user,
+        "🎉 Your AI Diet Plan is Ready",
+        f"Hi {request.user.username},\n\nCongrats! Your AI diet & exercise plan is ready.\nFollow it strictly 💪"
+    )
+    send_health_mail(request.user, "AI Plan Ready", msg)
+
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 @login_required(login_url='login')
@@ -69,7 +80,6 @@ def aiapp_view(request):
         EXERCISE PLAN:
         (table)
         """
-
         try:
             response = model.generate_content(full_prompt)
             reply = response.text if hasattr(response, "text") else "No response from AI"
