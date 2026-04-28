@@ -16,17 +16,13 @@ import google.generativeai as genai
 from .models import UserDietPlan,BMIRecord,UserHealthPlan
 import re
 from .models import HealthProgress
-
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 @login_required(login_url='login')
 # @csrf_exempt
 def aiapp_view(request):
     if request.method == "POST":
-        try:
-            data = json.loads(request.body)
-        except:
-            return JsonResponse({"reply": "Invalid request"}, status=400)
+        data = json.loads(request.body)
         user_message = data.get("message")
 
         bmi = request.session.get("bmi", "")
@@ -47,6 +43,7 @@ def aiapp_view(request):
         # body_goal = body_goal_match.group(1) if body_goal_match else "general fitness"
 
           # AI ko proper instruction
+        
         full_prompt = f"""
         You are a professional Indian health planner.
 
@@ -78,7 +75,6 @@ def aiapp_view(request):
             reply = response.text if hasattr(response, "text") else "No response from AI"
         except Exception as e:
             return JsonResponse({"reply": f"Error: {str(e)}"})
-
         # 🔥 Split diet and exercise
         diet_part = reply.split("EXERCISE PLAN:")[0]
         if "EXERCISE PLAN:" in reply:
@@ -115,7 +111,8 @@ def aiapp_view(request):
             }
         )
 
-        return JsonResponse({"reply": diet_part})
+        full_reply = diet_part + "\n\n<h2>EXERCISE PLAN</h2>\n" + exercise_part
+        return JsonResponse({"reply": full_reply})
 
     return render(request, "ai_planner.html")
 
@@ -153,6 +150,7 @@ def diet(request):
         return render(request, "Diet.html", context)
 
     return redirect('bmi')
+
 def exercise_page(request):
     session_key = request.session.session_key
     plan = UserHealthPlan.objects.filter(user=request.user).first()
@@ -206,7 +204,7 @@ def SignuPage(request):
         User.objects.create_user(username=uname, email=email, password=pass1)
         messages.success(request, "Account created successfully! Please login.")
         return redirect('login')
-
+        # signup view me
     return render(request, 'signup.html')
 def LogoutPage(request):
      logout(request)

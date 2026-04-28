@@ -21,9 +21,15 @@ from dotenv import load_dotenv
 load_dotenv()  
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 # GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY")
+# EMAIL SETTINGS
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
+EMAIL_HOST_USER = 'rahulrajput7747@gmail.com'
+EMAIL_HOST_PASSWORD = 'osaa sdsc wjzu exdp'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 

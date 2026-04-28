@@ -311,9 +311,10 @@ body{
 /* Tables (AI often returns tables) */
 #diet-box table{
     width: 100%;
+    min-width: 500px;
     border-collapse: collapse;
     margin: 15px 0;
-    font-size: 15px;
+    font-size: 13px;
 }
 
 #diet-box th,

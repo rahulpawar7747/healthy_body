@@ -30,3 +30,4 @@ class HealthProgress(models.Model):
     bmi = models.FloatField()
     weight = models.FloatField()
     date = models.DateField(auto_now_add=True)
+
