@@ -1,8 +1,8 @@
 from django.apps import AppConfig
 
 class HealthyConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
     name = 'healthy'
 
     def ready(self):
-        from .scheduler import start
-        start()
+        pass

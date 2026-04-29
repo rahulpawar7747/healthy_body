@@ -102,6 +102,9 @@ body{
     border-collapse: collapse;
     margin-top:15px;
     background:#fff;
+    min-width: 500px;
+    margin: 15px 0;
+    font-size: 13px;
 }
 
 #exercise-box th,

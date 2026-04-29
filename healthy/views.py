@@ -16,16 +16,9 @@ import google.generativeai as genai
 from .models import UserDietPlan,BMIRecord,UserHealthPlan
 import re
 from .models import HealthProgress
-from .utils import send_health_mail
-from datetime import time
+from .utils import convert_table_to_html, send_health_mail
+from datetime import datetime, time
 from .models import DietSchedule
-def ai_diet_view(request):
-    send_health_mail(
-        request.user,
-        "🎉 Your AI Diet Plan is Ready",
-        f"Hi {request.user.username},\n\nCongrats! Your AI diet & exercise plan is ready.\nFollow it strictly 💪"
-    )
-    send_health_mail(request.user, "AI Plan Ready", msg)
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
@@ -72,7 +65,7 @@ def aiapp_view(request):
         Strict Rules:
         - Indian foods only
         - Budget friendly
-        - Separate sections clearly as:
+        - Separate sections clearly as with time:
 
         DIET PLAN:
         (table)
@@ -121,8 +114,68 @@ def aiapp_view(request):
             }
         )
 
-        full_reply = diet_part + "\n\n<h2>EXERCISE PLAN</h2>\n" + exercise_part
-        return JsonResponse({"reply": full_reply})
+
+        today = datetime.now().strftime("%d %b %Y")
+
+        diet_html = convert_table_to_html(diet_part)
+        exercise_html = convert_table_to_html(exercise_part)
+
+        html_message = f"""
+        <html>
+        <head>
+        <style>
+            body {{
+                font-family: Arial, sans-serif;
+            }}
+            .card {{
+                max-width:700px;
+                margin:auto;
+                padding:15px;
+            }}
+            table {{
+                width:100%;
+                border-collapse:collapse;
+            }}
+            th, td {{
+                border:1px solid #444;
+                padding:8px;
+                text-align:center;
+                font-size:14px;
+            }}
+            h2 {{
+                background:#4CAF50;
+                color:white;
+                padding:10px;
+            }}
+        </style>
+        </head>
+        <body>
+
+        <div class="card">
+
+        <h1 style="text-align:center">🎉 Your AI Health Plan</h1>
+        <p style="text-align:center;color:gray">{today}</p>
+
+        <h2>🥗 Diet Plan</h2>
+        {diet_html}
+
+        <br><br>
+
+        <h2>💪 Exercise Plan</h2>
+        {exercise_html}
+
+        </div>
+
+        </body>
+        </html>
+        """
+
+    send_health_mail(request.user, "🎉 Your AI Health Plan", html_message)
+
+
+
+    full_reply = diet_part + "\n\n<h2>EXERCISE PLAN</h2>\n" + exercise_part
+    return JsonResponse({"reply": full_reply})
 
     return render(request, "ai_planner.html")
 

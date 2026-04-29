@@ -5,7 +5,7 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family: 'Poppins', Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ===== Page Layout Fix ===== */
@@ -154,10 +154,62 @@ button:hover{
     max-width:100%;
     border-radius:10px;
 }
+/* ===== NAVBAR FIXED ===== */
+.navbar {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 40px !important; /* Adjusted padding for better mobile feel */
+    background: #1f2a38 !important;
+    min-height: 70px;
+    color:white;
+}
+
+/* Reset the toggle button specifically */
+.navbar-toggler {
+    border: 1px solid rgba(255, 255, 255, 0.5) !important; /* Makes the border visible */
+    padding: 5px 8px !important;
+    background: transparent !important;
+    margin-right: 0 !important;
+    width: auto !important; /* Prevents it from stretching */
+    margin-top: 0 !important; /* Removes the 50px margin from your global button style */
+}
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+    font-size: 22px;
+    text-decoration: none;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    margin-left: 20px;
+}
+
+/* Target the links specifically within the navbar */
+.navbar .nav-link a{
+    color: white !important; /* !important ensures Bootstrap doesn't override it */
+    margin-left: 20px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+/* Hover state */
+.navbar .nav-link:hover {
+    color: #00c3ff9f !important;
+}
+
+/* Optional: Style for the "Healthy Body" brand name on the left */
+.navbar-brand {
+    color: white !important;
+    font-weight: bold;
+}
+
 
 /* ===== Responsive Fix ===== */
 @media(max-width:480px){
     form{
-        padding:25px 20px;
+        padding:15px 10px;
     }
 }
