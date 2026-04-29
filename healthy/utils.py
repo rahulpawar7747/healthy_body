@@ -1,5 +1,5 @@
 from django.core.mail import EmailMultiAlternatives
-import markdown
+# import markdown
 def send_health_mail(user, subject, html_message):
     if not user.email:
         return
