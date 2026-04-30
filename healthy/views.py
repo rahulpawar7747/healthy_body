@@ -13,7 +13,7 @@ from django.conf import settings
 import json
 import os
 import google.generativeai as genai
-from .models import UserDietPlan,BMIRecord,UserHealthPlan,UserDiet, UserExercise
+from .models import UserDietPlan,BMIRecord,UserHealthPlan,UserExercise
 import re
 from .models import HealthProgress
 from .utils import convert_table_to_html, send_health_mail
