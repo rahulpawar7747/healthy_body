@@ -29,16 +29,29 @@ def cron_trigger_mails(request):
     if key != "rahul_secret_key_123":
         return HttpResponse("Unauthorized", status=401)
 
-    users = User.objects.all()
+    for user in User.objects.all():
 
-    for user in users:
-        diet = UserDiet.objects.filter(user=user).last()
-        exercise = UserExercise.objects.filter(user=user).last()
+        diet_obj = UserDiet.objects.filter(user=user).last()
+        ex_obj = UserExercise.objects.filter(user=user).last()
 
-        if diet and exercise:
-            send_mail(user, diet, exercise)  # ← SAME MAIL FUNCTION
+        if diet_obj and ex_obj and user.email:
 
-    return HttpResponse("Emails Sent")
+            diet_html = convert_table_to_html(diet_obj.diet_reply)
+            exercise_html = convert_table_to_html(ex_obj.exercise_reply)
+
+            html_message = f"""
+            <h1>🎉 Your AI Health Plan</h1>
+
+            <h2>🥗 Diet Plan</h2>
+            {diet_html}
+
+            <h2>💪 Exercise Plan</h2>
+            {exercise_html}
+            """
+
+            send_health_mail(user, "🎉 Your AI Health Plan", html_message)
+
+    return HttpResponse("Emails Sent Successfully")
 
 def send_scheduled_emails(request):
     # simple security key
