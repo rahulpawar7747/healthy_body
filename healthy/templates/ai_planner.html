@@ -55,17 +55,31 @@
         <option value="Non-Vegetarian">Non-Vegetarian</option>
     </select>
     <select id ="bodyGoal">
+
         <option value="">Select body goal</option>
+        <option value="Weight loss (fat loss)">Weight loss (fat loss)</option>
+        <option value="Rapid fat loss">Rapid fat loss</option>
+        <option value="Belly fat reduction">Belly fat reduction</option>
         <option value="Muscle gain">Muscle gain</option>
-        <option value="Lean & Athletic body">Lean & Athletic body</option>
-        <option value="Weight loss">Weight loss</option>
-        <option value="Bulky Body">Bulky Body</option>
+        <option value="Lean muscle gain">Lean muscle gain</option>
+        <option value="Bulky body / bodybuilding">Bulky body / bodybuilding</option>
+        <option value="Lean & athletic body">Lean & athletic body</option>
+        <option value="Toned body">Toned body</option>
         <option value="Overall fitness">Overall fitness</option>
+        <option value="Weight gain (healthy)">Weight gain (healthy)</option>
+        <option value="Strength increase">Strength increase</option>
+        <option value="Stamina & endurance">Stamina & endurance</option>
+        <option value="Improve metabolism">Improve metabolism</option>
+        <option value="Diabetes friendly fitness">Diabetes friendly fitness</option>
+        <option value="Heart healthy fitness">Heart healthy fitness</option>
+        <option value="Post pregnancy fitness">Post pregnancy fitness</option>
+        <option value="Senior citizen fitness">Senior citizen fitness</option>
+
     </select>
 
     <input type="text" id="user-input" placeholder="Any extra preference? (optional)">
     
-    <button onclick="sendMessage()">Get Plans</button>
+    <button type="button" onclick="sendMessage()">Get Plans</button>
 </div>
 
 <div id="chat-box" class="mt-4"></div>
@@ -84,12 +98,12 @@ async function sendMessage() {
   const bodyGoal = document.getElementById("bodyGoal").value;
   const extra = document.getElementById("user-input").value;
 
-if(!budget || !foodType){
-    alert("Please fill all fields");
-    return;
-}
+  if(!budget || !foodType || !bodyGoal){
+      alert("Please fill all fields");
+      return;
+  }
 
-const message = `
+  const message = `
 My budget is ₹${budget} per day.
 I am ${foodType}.
 My body goal is ${bodyGoal}.
@@ -97,7 +111,7 @@ ${extra}
 `;
 
   const chatBox = document.getElementById("chat-box");
-  chatBox.innerHTML = `<p><b>You:</b> Budget ₹${budget}, ${foodType}</p>`;
+  chatBox.innerHTML = `<p><b>Generating plan... ⏳</b></p>`;
 
   const res = await fetch("/aiapp/", {
     method: "POST",
@@ -109,8 +123,19 @@ ${extra}
   });
 
   const data = await res.json();
-  const html = marked.parse(data.reply);
-  chatBox.innerHTML += `<div class="ai-reply">${html}</div>`;
+
+  const dietHtml = marked.parse(data.diet);
+  const exerciseHtml = marked.parse(data.exercise);
+
+  // ✅ DISPLAY HERE
+  chatBox.innerHTML = `
+      <div class="ai-reply">
+          <h2>🥗 Diet Plan</h2>
+          ${dietHtml}
+          <h2 style="margin-top:25px;">💪 Exercise Plan</h2>
+          ${exerciseHtml}
+      </div>
+  `;
 }
 </script>
 <!-- FOOTER -->

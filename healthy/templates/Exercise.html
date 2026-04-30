@@ -30,22 +30,22 @@
 <div class="container my-5">
   <div class="card1 mb-4 shadow">
     <h2>Your AI Exercise Plan</h2>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     {% if plan %}
       <div id="exercise-box"></div>
 
       <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-      <script>
-      document.addEventListener("DOMContentLoaded", function () {
-          marked.setOptions({
-              gfm: true,
-              breaks: true
-          });
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    marked.setOptions({
+        gfm: true,
+        breaks: true
+    });
 
-          const markdown = `{{ plan.exercise_reply|escapejs }}`;
-          document.getElementById("exercise-box").innerHTML = marked.parse(markdown);
-      });
-      </script>
+    const raw = `{{ plan.exercise_reply|escapejs }}`;
+    document.getElementById("exercise-box").innerHTML =
+        marked.parse(raw);
+});
+</script>
     {% else %}
       <p>No exercise plan generated yet. Go to AI Planner first.</p>
     {% endif %}

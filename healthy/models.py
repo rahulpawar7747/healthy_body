@@ -19,6 +19,7 @@ class BMIRecord(models.Model):
     status = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class UserHealthPlan(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     diet_reply = models.TextField()

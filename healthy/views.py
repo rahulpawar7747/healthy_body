@@ -29,6 +29,16 @@ def aiapp_view(request):
         data = json.loads(request.body)
         user_message = data.get("message")
 
+        # ✅ CHECK EXISTING PLAN
+        existing_plan = UserHealthPlan.objects.filter(user=request.user).first()
+
+        if existing_plan and existing_plan.diet_reply and existing_plan.exercise_reply:
+            return JsonResponse({
+                "diet": existing_plan.diet_reply,
+                "exercise": existing_plan.exercise_reply,
+                "from_db": True
+            })
+
         bmi = request.session.get("bmi", "")
         status = request.session.get("status", "")
         age = request.session.get("age", "")
@@ -65,7 +75,7 @@ def aiapp_view(request):
         Strict Rules:
         - Indian foods only
         - Budget friendly
-        - Separate sections clearly as with time:
+        - Separate sections clearly as:
 
         DIET PLAN:
         (table)
@@ -79,13 +89,9 @@ def aiapp_view(request):
         except Exception as e:
             return JsonResponse({"reply": f"Error: {str(e)}"})
         # 🔥 Split diet and exercise
-        diet_part = reply.split("EXERCISE PLAN:")[0]
-        if "EXERCISE PLAN:" in reply:
-            diet_part = reply.split("EXERCISE PLAN:")[0]
-            exercise_part = reply.split("EXERCISE PLAN:")[1]
-        else:
-            diet_part = reply
-            exercise_part = ""
+        match = re.split(r'(?i)exercise plan', reply, maxsplit=1)
+        diet_part = match[0]
+        exercise_part = match[1] if len(match) > 1 else ""
 
         # Save Diet
         UserDietPlan.objects.update_or_create(
@@ -175,7 +181,10 @@ def aiapp_view(request):
 
 
     full_reply = diet_part + "\n\n<h2>EXERCISE PLAN</h2>\n" + exercise_part
-    return JsonResponse({"reply": full_reply})
+    return JsonResponse({
+    "diet": diet_part,
+    "exercise": exercise_part
+        })
 
     return render(request, "ai_planner.html")
 
