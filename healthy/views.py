@@ -13,7 +13,7 @@ from django.conf import settings
 import json
 import os
 import google.generativeai as genai
-from .models import UserDietPlan,BMIRecord,UserHealthPlan,UserExercise
+from .models import UserDietPlan,BMIRecord,UserHealthPlan,UserDiet,UserExercise
 import re
 from .models import HealthProgress
 from .utils import convert_table_to_html, send_health_mail
@@ -209,7 +209,7 @@ def progress_chart(request):
             "goal_bmi_json": json.dumps(goal_bmi),
         })
 def diet_view(request):
-    plan = UserDietplan.objects.filter(user=request.user).first()
+    plan = UserDiet.objects.filter(user=request.user).first()
 
     now = timezone.localtime().time()
     
