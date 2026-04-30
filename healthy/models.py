@@ -39,3 +39,20 @@ class DietSchedule(models.Model):
     breakfast_time = models.TimeField()
     lunch_time = models.TimeField()
     dinner_time = models.TimeField()
+
+class UserDiet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    diet_reply = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Diet - {self.user.username}"
+
+
+class UserExercise(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    exercise_reply = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Exercise - {self.user.username}"
