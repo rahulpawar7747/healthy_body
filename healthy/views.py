@@ -241,7 +241,7 @@ def diet(request):
 @login_required
 def exercise_view(request):
     plan = UserExercise.objects.filter(user=request.user).first()
-    return render(request, "exercise.html", {
+    return render(request, "Exercise.html", {
         "exercise_markdown": plan.exercise_reply if plan else ""
     })
 # @login_required
