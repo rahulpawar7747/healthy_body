@@ -24,34 +24,39 @@ from django.core.mail import send_mail  # ← jo tum already use karte ho
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 
-def cron_trigger_mails(request):
-    key = request.GET.get("key")
-    if key != "rahul_secret_key_123":
-        return HttpResponse("Unauthorized", status=401)
+from healthy.models import UserDiet, UserExercise
+from .utils import send_health_mail
 
-    for user in User.objects.all():
+def cron_trigger_mails(request):
+        key = request.GET.get("key")
+        user_id = request.GET.get("uid")
+
+        if key != "rahul_secret_key_123":
+            return HttpResponse("Unauthorized", status=401)
+
+        try:
+            user = User.objects.get(id=user_id)
+        except:
+            return HttpResponse("Invalid user")
 
         diet_obj = UserDiet.objects.filter(user=user).last()
         ex_obj = UserExercise.objects.filter(user=user).last()
 
         if diet_obj and ex_obj and user.email:
 
-            diet_html = convert_table_to_html(diet_obj.diet_reply)
-            exercise_html = convert_table_to_html(ex_obj.exercise_reply)
-
             html_message = f"""
             <h1>🎉 Your AI Health Plan</h1>
 
             <h2>🥗 Diet Plan</h2>
-            {diet_html}
+            <pre>{diet_obj.diet_reply}</pre>
 
             <h2>💪 Exercise Plan</h2>
-            {exercise_html}
+            <pre>{ex_obj.exercise_reply}</pre>
             """
 
             send_health_mail(user, "🎉 Your AI Health Plan", html_message)
 
-    return HttpResponse("Emails Sent Successfully")
+        return HttpResponse(f"Mail sent to {user.email}")
 
 def send_scheduled_emails(request):
     # simple security key
