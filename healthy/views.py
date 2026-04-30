@@ -127,8 +127,8 @@ def aiapp_view(request):
 
         today = datetime.now().strftime("%d %b %Y")
 
-        diet_html = convert_table_to_html(diet_part)
-        exercise_html = convert_table_to_html(exercise_part)
+        # diet_html = convert_table_to_html(diet_part)
+        # exercise_html = convert_table_to_html(exercise_part)
 
         html_message = f"""
         <html>
