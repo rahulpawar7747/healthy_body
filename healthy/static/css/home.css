@@ -76,7 +76,9 @@ body{
 .ai-reply table{
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    min-width: 700px;   /* table readable rahe */
+    margin-top: 15px;
+    font-size: 14px;
 }
 
 .ai-reply th,
@@ -84,11 +86,13 @@ body{
     border: 1px solid #ddd;
     padding: 10px;
     text-align: center;
+    white-space: normal;
 }
 
 .ai-reply th{
     background: #222;
-    color: #fff;
+    color: white;
+    font-weight: 600;
 }
 
 /* ===== Responsive ===== */
@@ -105,6 +109,7 @@ body{
     min-width: 500px;
     margin: 15px 0;
     font-size: 13px;
+    min-width: 700px;   /* table readable rahe */
 }
 
 #exercise-box th,
@@ -112,6 +117,7 @@ body{
     border:1px solid #ccc;
     padding:10px;
     text-align:center;
+    white-space: normal;
 }
 
 #exercise-box th{
@@ -325,6 +331,7 @@ body{
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
+    white-space: normal;
 }
 
 #diet-box th{
