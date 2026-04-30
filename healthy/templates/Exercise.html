@@ -29,23 +29,21 @@
 </nav>
 <div class="container my-5">
   <div class="card1 mb-4 shadow">
-    <h2>Your AI Exercise Plan</h2>
-      {% if exercise_markdown %}
-      <div id="exercise-box"></div>
+    <h2>Your Exercise Plan</h2>
+    <pre>{{ exercise.exercise_text }}</pre>
+    {% if exercise_markdown %}
+    <div id="exercise-box"></div>
 
-      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-      <script>
-      document.addEventListener("DOMContentLoaded", function () {
-          marked.setOptions({ gfm: true, breaks: true });
-
-          const raw = `{{ exercise_markdown|escapejs }}`;
-          document.getElementById("exercise-box").innerHTML =
-              marked.parse(raw);
-      });
-      </script>
-      {% else %}
-      <p>No exercise plan generated yet. Go to AI Planner first.</p>
-      {% endif %}
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const markdown = `{{ exercise_markdown|escapejs }}`;
+        document.getElementById("exercise-box").innerHTML = marked.parse(markdown);
+    });
+    </script>
+    {% else %}
+    <p>No exercise plan generated yet. Go to AI Planner first.</p>
+    {% endif %}
   </div>
 </div>
 </body>

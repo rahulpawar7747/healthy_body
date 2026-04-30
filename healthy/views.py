@@ -13,13 +13,12 @@ from django.conf import settings
 import json
 import os
 import google.generativeai as genai
-from .models import UserDietPlan,BMIRecord,UserHealthPlan,UserDiet,UserExercise
+from .models import UserDietPlan,BMIRecord,UserHealthPlan,DietSchedule,UserDiet,UserExercise
 import re
 from .models import HealthProgress
 from .utils import convert_table_to_html, send_health_mail
 from datetime import datetime, time
-from django.utils import timezone
-from .models import DietSchedule
+
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
@@ -31,12 +30,13 @@ def aiapp_view(request):
         user_message = data.get("message")
 
         # ✅ CHECK EXISTING PLAN
-        existing_plan = UserHealthPlan.objects.filter(user=request.user).first()
+        existing_diet = UserDiet.objects.filter(user=request.user).first()
+        existing_ex = UserExercise.objects.filter(user=request.user).first()
 
-        if existing_plan and existing_plan.diet_reply and existing_plan.exercise_reply:
+        if existing_diet and existing_ex:
             return JsonResponse({
-                "diet": existing_plan.diet_reply,
-                "exercise": existing_plan.exercise_reply,
+                "diet": existing_diet.diet_reply,
+                "exercise": existing_ex.exercise_reply,
                 "from_db": True
             })
 
@@ -76,6 +76,12 @@ def aiapp_view(request):
             Do NOT write any introduction, explanation, greeting, advice, or paragraph.
             Output ONLY two sections:
 
+        First give DIET PLAN in table format which includes meals for each day.
+        Then give EXERCISE PLAN in table format which includes exercises for each day.
+        IMPORTANT:
+            Do NOT write any introduction, explanation, greeting, advice, or paragraph.
+            Output ONLY two sections:
+
 
         Strict Rules:
         - Indian foods only
@@ -94,9 +100,11 @@ def aiapp_view(request):
         except Exception as e:
             return JsonResponse({"reply": f"Error: {str(e)}"})
         # 🔥 Split diet and exercise
-        match = re.split(r'(?i)exercise plan', reply, maxsplit=1)
-        diet_part = match[0]
-        exercise_part = match[1] if len(match) > 1 else ""
+        diet_match = re.search(r'(?is)diet plan\s*:?(.*?)(?=exercise plan)', reply)
+        exercise_match = re.search(r'(?is)exercise plan\s*:?(.*)', reply)
+
+        diet_part = diet_match.group(1).strip() if diet_match else ""
+        exercise_part = exercise_match.group(1).strip() if exercise_match else ""
 
         # Save Diet
         # UserDietPlan.objects.update_or_create(
@@ -117,13 +125,15 @@ def aiapp_view(request):
             request.session.create()
             session_key = request.session.session_key
 
-        UserHealthPlan.objects.update_or_create(
+        UserDiet.objects.update_or_create(
             user=request.user,
-            defaults={
-                "diet_reply": diet_part,
-                "exercise_reply": exercise_part
-            }
+            defaults={"diet_reply": diet_part}
         )
+
+        UserExercise.objects.update_or_create(
+            user=request.user,
+            defaults={"exercise_reply": exercise_part}
+)
 
 
         today = datetime.now().strftime("%d %b %Y")
@@ -208,15 +218,9 @@ def progress_chart(request):
             "weights_json": json.dumps(weights),
             "goal_bmi_json": json.dumps(goal_bmi),
         })
+@login_required
 def diet_view(request):
     plan = UserDiet.objects.filter(user=request.user).first()
-
-    now = timezone.localtime().time()
-    
-    # TEST ke liye temporarily full day
-    if time(0, 0) <= now <= time(23, 59):
-        if plan and plan.diet_reply:
-            send_health_mail(request.user, "🥗 Your Diet Plan", plan.diet_reply)
     return render(request, "Diet.html", {"diet_markdown": plan.diet_reply if plan else ""})
 def diet(request):
     bmi_id = request.session.get('bmi_id')
@@ -234,16 +238,20 @@ def diet(request):
         return render(request, "Diet.html", context)
 
     return redirect('bmi')
-
-def exercise_page(request):
-    plan = UserHealthPlan.objects.filter(user=request.user).first()
-    return render(request, "Exercise.html", {"exercise_markdown": plan.exercise_reply if plan else ""})
+@login_required
 def exercise_view(request):
     plan = UserExercise.objects.filter(user=request.user).first()
-    now = timezone.localtime().time()
-    if time(0, 0) <= now <= time(23, 59):
-        if plan and plan.exercise_reply:
-            send_health_mail(request.user, "💪 Your Exercise Plan", plan.exercise_reply)
+    return render(request, "exercise.html", {
+        "exercise_markdown": plan.exercise_reply if plan else ""
+    })
+# @login_required
+# def diet_page(request):
+#     diet = DietPlan.objects.filter(user=request.user).first()
+#     return render(request, "Diet.html", {"diet": diet})
+# @login_required
+# def exercise_page(request):
+#     exercise = ExercisePlan.objects.filter(user=request.user).first()
+#     return render(request, "Exercise.html", {"exercise": exercise})   
 def login_page(request):
         if request.method=='POST':
             username=request.POST.get('username')
@@ -369,17 +377,46 @@ def contact(request):
         return redirect('/contact/')
 
     return render(request, 'contact.html')
+# @login_required
+# def generate_plan(request):
+#     user = request.user
+
+#     # ✅ Agar pehle se plan bana hai to wahi bhejo
+#     diet = DietPlan.objects.filter(user=user).first()
+#     exercise = ExercisePlan.objects.filter(user=user).first()
+
+#     if diet and exercise:
+#         return render(request, "ai_planner.html", {
+#             "diet": diet.diet_text,
+#             "exercise": exercise.exercise_text
+#         })
+
+#     # ❗ Agar nahi hai tab AI call karo
+#     ai_response = aiapp_view()   # tumhara Gemini/OpenAI
+
+#     # 🔥 Yaha split karna hai
+#     diet_text = ai_response.split("Exercise Plan:")[0]
+#     exercise_text = ai_response.split("Exercise Plan:")[1]
+
+#     # ✅ Separate save
+#     DietPlan.objects.create(user=user, diet_text=diet_text)
+#     ExercisePlan.objects.create(user=user, exercise_text=exercise_text)
+
+#     return render(request, "ai_planner.html", {
+#         "diet": diet_text,
+#         "exercise": exercise_text
+#     })
 
 def weight_gain(request):
     return render(request, 'weight_gain.html')
-def exercise(request):
-    return render(request, 'Exercise.html')
+# def exercise(request):
+#     return render(request, 'Exercise.html')
 def privacy(request):
     return render(request, 'privacy.html')
 def About(request):
      return render(request, 'about.html')
-def Excercise(request):
-     return render(request, 'Exercise.html')
+# def Excercise(request):
+#      return render(request, 'Exercise.html')
 def help(request):
      return render(request, 'help.html')
 def Faq(request):
