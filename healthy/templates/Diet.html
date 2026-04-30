@@ -31,24 +31,23 @@
           <div class="card1 mb-4 shadow"><h2>Your AI Diet Plan</h2>
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-        {% if diet %}
         <div id="diet-box"></div>
 
-        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-        <script>
-        document.addEventListener("DOMContentLoaded", function () {
-              marked.setOptions({
-              gfm: true,
-              breaks: true
-          });
-            const markdown = `{{ diet.ai_reply|escapejs }}`;
-            document.getElementById("diet-box").innerHTML = marked.parse(markdown);
-        });
-        </script>
+      {% if diet_markdown %}
+      <div id="diet-box"></div>
 
-        {% else %}
-        <p>No diet plan generated yet. Go to AI Planner first.</p>
-        {% endif %}
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          marked.setOptions({ gfm: true, breaks: true });
+
+          const markdown = `{{ diet_markdown|escapejs }}`;
+          document.getElementById("diet-box").innerHTML = marked.parse(markdown);
+      });
+      </script>
+      {% else %}
+      <p>No diet plan generated yet. Go to AI Planner first.</p>
+      {% endif %}
     </div>
 </div>
 </body>

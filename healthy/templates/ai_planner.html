@@ -124,18 +124,21 @@ ${extra}
 
   const data = await res.json();
 
-  const dietHtml = marked.parse(data.diet);
-  const exerciseHtml = marked.parse(data.exercise);
+    const dietHtml = marked.parse(data.diet || "");
+    const exerciseHtml = marked.parse(data.exercise || "");
 
-  // ✅ DISPLAY HERE
-  chatBox.innerHTML = `
-      <div class="ai-reply">
-          <h2>🥗 Diet Plan</h2>
-          ${dietHtml}
-          <h2 style="margin-top:25px;">💪 Exercise Plan</h2>
-          ${exerciseHtml}
-      </div>
-  `;
+    let content = `<div class="ai-reply">`;
+
+    if (dietHtml.trim() !== "") {
+        content += `<h2>🥗 Diet Plan</h2>${dietHtml}`;
+    }
+
+    if (exerciseHtml.trim() !== "") {
+        content += `<h2 style="margin-top:25px;">💪 Exercise Plan</h2>${exerciseHtml}`;
+    }
+
+    content += `</div>`;
+    chatBox.innerHTML = content;
 }
 </script>
 <!-- FOOTER -->

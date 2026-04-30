@@ -94,17 +94,17 @@ def aiapp_view(request):
         exercise_part = match[1] if len(match) > 1 else ""
 
         # Save Diet
-        UserDietPlan.objects.update_or_create(
-            user=request.user,
-            defaults={
-                "bmi": bmi,
-                "status": status,
-                "budget": budget,
-                "food_type": food_type,
-                "body_goal": body_goal,
-                "ai_reply": diet_part
-            }
-        )
+        # UserDietPlan.objects.update_or_create(
+        #     user=request.user,
+        #     defaults={
+        #         "bmi": bmi,
+        #         "status": status,
+        #         "budget": budget,
+        #         "food_type": food_type,
+        #         "body_goal": body_goal,
+        #         "ai_reply": diet_part
+        #     }
+        # )
 
         # Save Exercise
         session_key = request.session.session_key
@@ -204,8 +204,8 @@ def progress_chart(request):
             "goal_bmi_json": json.dumps(goal_bmi),
         })
 def diet_view(request):
-    diet = UserDietPlan.objects.filter(user=request.user).first()
-    return render(request, "Diet.html", {"diet": diet})
+    plan = UserHealthPlan.objects.filter(user=request.user).first()
+    return render(request, "Diet.html", {"diet_markdown": plan.diet_reply if plan else ""})
 def diet(request):
     bmi_id = request.session.get('bmi_id')
 
@@ -224,9 +224,8 @@ def diet(request):
     return redirect('bmi')
 
 def exercise_page(request):
-    session_key = request.session.session_key
     plan = UserHealthPlan.objects.filter(user=request.user).first()
-    return render(request, "Exercise.html", {"plan": plan})
+    return render(request, "Exercise.html", {"exercise_markdown": plan.exercise_reply if plan else ""})
 def login_page(request):
         if request.method=='POST':
             username=request.POST.get('username')
