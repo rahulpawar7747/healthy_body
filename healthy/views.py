@@ -32,8 +32,8 @@ def cron_trigger_mails(request):
     users = User.objects.all()
 
     for user in users:
-        diet = user.userdiet_set.last()
-        exercise = user.userexercise_set.last()
+        diet = UserDiet.objects.filter(user=user).last()
+        exercise = UserExercise.objects.filter(user=user).last()
 
         if diet and exercise:
             send_mail(user, diet, exercise)  # ← SAME MAIL FUNCTION
