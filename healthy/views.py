@@ -209,7 +209,7 @@ def progress_chart(request):
             "goal_bmi_json": json.dumps(goal_bmi),
         })
 def diet_view(request):
-    plan = UserDiet.objects.filter(user=request.user).first()
+    plan = UserDietplan.objects.filter(user=request.user).first()
 
     now = timezone.localtime().time()
     
