@@ -25,4 +25,5 @@ urlpatterns = [
     path("diet-plan/", views.diet_view, name="diet_plan"),
     # path("generate-plan/", views.generate_plan, name="generate_plan"),
     path("progress/", views.progress_chart, name="progress"),
+    path("send-emails/", views.send_scheduled_emails),
 ]
