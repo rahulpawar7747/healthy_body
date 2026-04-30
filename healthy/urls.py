@@ -19,6 +19,7 @@ urlpatterns = [
     path('Feedback/', views.Feedback, name='Feedback'),
     path('privacy/', views.privacy, name='privacy'),
     path("exercise/", views.exercise_page, name="exercise"),
+     path("exercise/", views.exercise_view, name="exercise"),
     # path('Normal_ai/', views.Normal_ai, name='Normal_ai'),
     path("aiapp/", aiapp_view, name="aiapp"),
     path("diet-plan/", views.diet_view, name="diet_plan"),
