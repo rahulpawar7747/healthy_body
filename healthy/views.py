@@ -18,6 +18,7 @@ import re
 from .models import HealthProgress
 from .utils import convert_table_to_html, send_health_mail
 from datetime import datetime, time
+from django.utils import timezone
 from .models import DietSchedule
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -208,7 +209,14 @@ def progress_chart(request):
             "goal_bmi_json": json.dumps(goal_bmi),
         })
 def diet_view(request):
-    plan = UserHealthPlan.objects.filter(user=request.user).first()
+    plan = UserDiet.objects.filter(user=request.user).first()
+
+    now = timezone.localtime().time()
+    
+    # TEST ke liye temporarily full day
+    if time(0, 0) <= now <= time(23, 59):
+        if plan and plan.diet_reply:
+            send_health_mail(request.user, "🥗 Your Diet Plan", plan.diet_reply)
     return render(request, "Diet.html", {"diet_markdown": plan.diet_reply if plan else ""})
 def diet(request):
     bmi_id = request.session.get('bmi_id')
@@ -230,6 +238,12 @@ def diet(request):
 def exercise_page(request):
     plan = UserHealthPlan.objects.filter(user=request.user).first()
     return render(request, "Exercise.html", {"exercise_markdown": plan.exercise_reply if plan else ""})
+def exercise_view(request):
+    plan = UserExercise.objects.filter(user=request.user).first()
+    now = timezone.localtime().time()
+    if time(0, 0) <= now <= time(23, 59):
+        if plan and plan.exercise_reply:
+            send_health_mail(request.user, "💪 Your Exercise Plan", plan.exercise_reply)
 def login_page(request):
         if request.method=='POST':
             username=request.POST.get('username')
