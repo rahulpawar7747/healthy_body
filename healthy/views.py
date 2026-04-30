@@ -18,11 +18,27 @@ import re
 from .models import HealthProgress
 from .utils import convert_table_to_html, send_health_mail
 from datetime import datetime, time
-from django.core.mail import send_mail
+from django.core.mail import send_mail  # ← jo tum already use karte ho
 
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
+
+def cron_trigger_mails(request):
+    key = request.GET.get("key")
+    if key != "rahul_secret_key_123":
+        return HttpResponse("Unauthorized", status=401)
+
+    users = User.objects.all()
+
+    for user in users:
+        diet = user.userdiet_set.last()
+        exercise = user.userexercise_set.last()
+
+        if diet and exercise:
+            send_mail(user, diet, exercise)  # ← SAME MAIL FUNCTION
+
+    return HttpResponse("Emails Sent")
 
 def send_scheduled_emails(request):
     # simple security key
