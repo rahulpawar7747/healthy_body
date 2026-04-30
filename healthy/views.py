@@ -69,8 +69,12 @@ def aiapp_view(request):
         Budget: ₹{budget}
         Food Type: {food_type}
         Body Goal: {body_goal}
-        First give DIET PLAN in table format.
-        Then give EXERCISE PLAN in table format.
+        First give DIET PLAN in table format which includes meals for each day.
+        Then give EXERCISE PLAN in table format which includes exercises for each day.
+        IMPORTANT:
+            Do NOT write any introduction, explanation, greeting, advice, or paragraph.
+            Output ONLY two sections:
+
 
         Strict Rules:
         - Indian foods only
