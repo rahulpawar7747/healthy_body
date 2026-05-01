@@ -35,7 +35,10 @@ def send_health_mail(user, subject, html_message):
 
     # IMPORTANT: HTML attach karna zaroori hai
     email.attach_alternative(html_message, "text/html")
-    email.send()
+    try:
+        email.send()
+    except Exception as e:
+        print("Email failed:", e)
 
 def convert_table_to_html(text):
     html = markdown.markdown(text, extensions=["tables"])

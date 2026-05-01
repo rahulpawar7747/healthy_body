@@ -1,0 +1,667 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+body{
+    /* background:rgb(139, 12, 12); */
+    background : url("/static/images/1234.jpg") no-repeat center center/cover;
+    background-size: cover;
+}
+/* ===== AI Diet Form Card ===== */
+.ai-form{
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: center;
+}
+
+/* Inputs & Select */
+.ai-form input,
+.ai-form select{
+    height: 45px;
+    padding: 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: 0.2s;
+    width: 100%;
+}
+
+.ai-form input:focus,
+.ai-form select:focus{
+    border-color: #222;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+}
+
+/* Button */
+.ai-form button{
+    height: 45px;
+    padding: 0 18px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.ai-form button:hover{
+    background: #000;
+    transform: translateY(-1px);
+}
+
+/* Chat box */
+#chat-box{
+    max-width: 900px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* AI table styling */
+.ai-reply table{
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;   /* table readable rahe */
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.ai-reply th,
+.ai-reply td{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    white-space: normal;
+}
+
+.ai-reply th{
+    background: #222;
+    color: white;
+    font-weight: 600;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px){
+    .ai-form{
+        grid-template-columns: 1fr;
+    }
+}
+#exercise-box table{
+    width:100%;
+    border-collapse: collapse;
+    margin-top:15px;
+    background:#fff;
+    min-width: 500px;
+    margin: 15px 0;
+    font-size: 13px;
+    min-width: 700px;   /* table readable rahe */
+}
+
+#exercise-box th,
+#exercise-box td{
+    border:1px solid #ccc;
+    padding:10px;
+    text-align:center;
+    white-space: normal;
+}
+
+#exercise-box th{
+    background:#222;
+    color:#fff;
+    font-weight:600;
+}
+/* NAVBAR */
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    padding:20px 80px;
+    background:#1f2a38;
+    color:white;
+}
+
+.navbar a{
+    color:white;
+    margin-left:20px;
+    text-decoration:none;
+}
+
+.navbar a:hover{
+    color:#00c3ff9f;
+}
+
+/* HERO */
+.hero{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:60px;
+    background:linear-gradient(to right,#1f2a38,#2d4b63);
+    color:white;
+    background: #1f2a38;
+    /* backdrop-filter: blur(0px); */
+}
+.hero1{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:60px;
+    /* background:linear-gradient(to right,#1f2a38,#2d4b63); */
+    color:black;
+    font-size:36px;
+    /*background: rgba(31,42,56,0.65);*/
+    backdrop-filter: blur(0px);
+    text-align: center;
+    flex-wrap:wrap;
+}
+.card2{
+    background:white;
+    padding:25px;
+    border-radius:25px;
+    width:450px;
+    max-width:600px;
+    box-shadow:0 5px 15px rgba(190, 178, 187, 0.664);
+    transition:0.3s;
+    margin: 35px auto;   /* center */
+}
+.hero-text .btn{
+    display:inline-block;
+    margin-top:15px;
+    background:#00a0c8;
+    color:#1f2a38;
+    font-weight:bold;
+    padding:14px 30px;
+    border-radius:30px;
+    transition:0.3s;
+}
+.hero-text .btn:hover{
+    background:white;
+    color:#1f2a38;
+}
+.hero-text h1{
+    font-size:45px;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    margin-bottom:25px;
+}
+
+.hero-img img{
+    width:400px;
+    border-radius:15px;
+    width:100%;
+    max-width:400px;
+    height:auto;
+}
+.hero1-img img{
+    /*width:400px;*/
+    border-radius:20px;
+    width:350PX;
+    max-width:600px;
+    height:auto;
+}
+
+/* BUTTONS */
+.btn{
+    padding:12px 25px;
+    background:#00c3ff9f;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.btn-dark{
+    padding:12px 25px;
+    background:#073f55;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+}
+
+/* FEATURES */
+.features{
+    text-align:center;
+    padding:60px;
+
+    /* background-image: url("../images/1234.jpg"); apni image ka path */
+    /* background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;  */
+    /* background: rgba(255,255,255,0.65); */
+    /*background: rgba(31,42,56,0.65);*/
+    backdrop-filter: blur(0px);
+}
+
+.feature-container{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    margin-top:40px;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:25px;
+    width:350px;
+    box-shadow:0 5px 15px rgba(190, 178, 187, 0.664);
+    transition:0.3s;
+}
+.card1{
+    background:white;
+    padding:18px;
+    border-radius:25px;
+    width:725px;
+    box-shadow:0 5px 15px rgba(190, 178, 187, 0.664);
+    transition:0.3s;
+    margin: 35px auto;   /* center */
+}
+/* ===== Heading ===== */
+.card1 h2{
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 600;
+    color: #2c3e50;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Diet Box (Markdown Content) ===== */
+#diet-box{
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Paragraphs */
+#diet-box p{
+    margin-bottom: 14px;
+}
+
+/* Headings from markdown */
+#diet-box h1,
+#diet-box h2,
+#diet-box h3{
+    margin-top: 22px;
+    margin-bottom: 12px;
+    color: #1a237e;
+    font-weight: 600;
+}
+
+/* Lists */
+#diet-box ul{
+    margin-left: 20px;
+    margin-bottom: 15px;
+}
+
+#diet-box li{
+    margin-bottom: 8px;
+}
+
+/* Bold text */
+#diet-box strong{
+    color: #000;
+}
+
+/* Tables (AI often returns tables) */
+#diet-box table{
+    width: 100%;
+    min-width: 500px;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 13px;
+}
+
+#diet-box th,
+#diet-box td{
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    white-space: normal;
+}
+
+#diet-box th{
+    background: #222;
+    font-weight: 600;
+    color:#fff;
+}
+
+/* Code blocks if AI returns */
+#diet-box pre{
+    background: #f4f6f9;
+    padding: 12px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+#diet-box code{
+    background: #eef1f4;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width:768px){
+    .card1{
+        padding: 20px;
+    }
+    #diet-box{
+        font-size: 15px;
+    }
+}
+.card3{
+    background:white;
+    padding:5px;
+    border-radius:25px;
+    width:300px;
+    height: 60px;   
+    box-shadow:0 5px 15px rgba(190, 178, 187, 0.664);
+    transition:0.3s;
+    margin: 20px auto;   /* center */
+    text-align:center;
+    display: flex;
+    justify-content: center; /*horizontal center*/
+    align-items: center;    /* vertical center*/  
+}
+.card img{
+    width:100%;
+    border-radius:20px;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+/* BMI SECTION */
+.bmi-section{
+    text-align:center;
+    padding:40px;
+    background:#1f2a38;
+    color:white;
+    /* background: rgba(255,255,255,0.65); */
+    /* backdrop-filter: blur(6px); */
+}
+.bmi-section .btn{
+    background:#00c3ff9f;
+    color:white;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.bmi-section .btn:hover{
+    background:white;
+    color:black;
+}
+/* DE SECTION */
+.DE-section{
+    text-align: center;
+    padding: 50px;
+    background: #1f2a38;
+    color: white;
+}
+
+.DE-section h1{
+    margin-bottom: 15px;
+    font-size: 32px;
+}
+
+.DE-section p{
+    margin-bottom: 25px;
+    font-size: 16px;
+}
+
+.de-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.DE-section .btn{
+    padding: 12px 28px;
+    background: #00c3ff9f;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.DE-section .btn:hover{
+    background: white;
+    color: black;
+    transform: translateY(-3px);
+}
+
+/* TESTIMONIALS */
+.testimonials{
+    padding:60px;
+    text-align:center;
+    /*background: rgba(31,42,56,0.65);*/
+    backdrop-filter: blur(0px);
+}
+
+.testimonial-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:30px;
+    margin-top:30px;
+}
+.testimonial{
+    transition:0.3s;
+}
+
+.testimonial:hover{
+    transform:translateY(-8px);
+}
+
+.testimonial{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    width:300px;
+    box-shadow:0 5px 15px rgba(17, 165, 128, 0.322);
+}
+
+/* FOOTER */
+.main-footer{
+    background:#0f1720;
+    color:white;
+    padding:30px 60px 20px;
+}
+
+.footer-container{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:5px;
+}
+
+.footer-column{
+    display:flex;
+    flex-direction:column;
+    min-width:170px;
+}
+
+.footer-column h3{
+    margin-bottom:15px;
+    color:#00c3ff9f;
+}
+
+.footer-column a{
+    color:#ccc;
+    text-decoration:none;
+    margin-bottom:8px;
+    transition:0.3s;
+}
+
+.footer-column a:hover{
+    color:#00c3ff9f;
+}
+
+.footer-logo{
+    color:#00c3ff9f;
+    margin-bottom:15px;
+}
+
+.footer-bottom{
+    text-align:center;
+    margin-top:40px;
+    padding-top:20px;
+    border-top:1px solid #333;
+    font-size:14px;
+    color:#aaa;
+}
+
+.footer-column a:hover{
+    transform:translateX(5px);
+}
+
+
+
+/* ============================= */
+/* USER SECTION (Exercise Table) */
+/* ============================= */
+
+
+.user-section{
+    padding:60px 20px;
+    /* background:linear-gradient(135deg,#1f2a38,#1f2a38); */
+    text-align:center;
+    background: rgba(31,42,56,0.7);
+    backdrop-filter: blur(0px);
+}
+/* Heading */
+.user-section h2{
+    font-size:32px;
+    margin-bottom:10px;
+    color:white;
+}
+
+.user-section p{
+    color:white;
+    margin-bottom:30px;
+}
+
+/* Table */
+.user-section table{
+    width:90%;
+    font-weight: bold;
+    margin: 30px auto;
+    background:white;
+    border-collapse:collapse;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+/* Header */
+.user-section thead{
+    background:#1f2a38;
+    color:white;
+    font-size:20px;
+}
+/* Table Cells */
+.user-section td{
+    padding:0px;
+    font-size:14px;
+}
+/* Name */
+.user-section b{
+    font-size:18px;
+    color:#333;
+}
+
+/* Buttons */
+.user-section .btn{
+    margin-top:8px;
+    border-radius:20px;
+    padding:6px 18px;
+    font-size:14px;
+}
+
+/* Button Hover */
+.user-section .btn:hover{
+    transform:scale(1.05);
+}
+/* Table box background */
+.user-section table td{
+    background:#95b1ca;
+    border:2px solid #000;
+    padding:14px 18px;        /* balanced padding */
+    font-size:16px;
+    vertical-align:top;
+    font-weight: bold;
+}
+table td{
+    font-weight: bold;
+}
+/* Header background */
+.user-section table th{
+    background:#596580;
+    color:#fff;
+    padding:14px;
+    font-size:18px;
+}
+
+.table-wrapper{
+    display:flex;
+    justify-content:center;
+    gap: 10px;       /* tables ke beech space */
+}
+
+
+
+/* Mobile Responsive */
+@media (max-width:768px){
+    .user-section table{
+        font-size:14px;
+    }
+    .hero1{
+        flex-direction:column;   /* row se column */
+        padding:25px 15px;
+    }
+
+}
+pre {
+    animation: fadeIn 1s ease-in-out;
+}
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(10px);}
+    to {opacity:1; transform:translateY(0);}
+}
+/* Attractive Section Headings */
+/* Clean attractive black headings */
+.features h2,
+.testimonials h2,
+.bmi-section h2,
+.user-section h2{
+    font-size: 28px;
+    font-weight: 850;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000;          /* black color */
+    letter-spacing: 1px;
+}
+
+/* Agar pehle ::after se line bani thi to remove */
+.features h2::after,
+.testimonials h2::after,
+.bmi-section h2::after,
+.user-section h2::after{
+    content: none;
+}

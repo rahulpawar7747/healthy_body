@@ -17,6 +17,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()  
 
@@ -33,8 +34,9 @@ EMAIL_HOST_USER = 'rahulrajput7747@gmail.com'
 EMAIL_HOST_PASSWORD = 'hmiv vpzj jbbr tyvq'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+
+# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 # RESEND_API_KEY = "re_B4MkfCYW_B8yXdz9kLGVPsLy4QLCZMUEc"
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_HOST = os.environ.get("EMAIL_HOST")
@@ -76,7 +78,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'healthy_body.urls'
-
+WSGI_APPLICATION = 'healthy_body.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -92,7 +94,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'healthy_body.wsgi.application'
 CSRF_TRUSTED_ORIGINS = [
     'https://rahulpawar.pythonanywhere.com'
 ]
@@ -101,11 +102,12 @@ CSRF_TRUSTED_ORIGINS = [
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
+    )
 }
+
 
 
 # Password validation
