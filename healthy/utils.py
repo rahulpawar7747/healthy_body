@@ -1,6 +1,5 @@
 from django.core.mail import EmailMultiAlternatives
 import markdown
-import resend
 from django.conf import settings
 
 
