@@ -22,10 +22,30 @@ from django.core.mail import send_mail  # ← jo tum already use karte ho
 # from .utils import send_plan_email
 from healthy.models import UserDiet, UserExercise
 from .utils import send_health_mail
+import resend
 
 
+resend.api_key = settings.RESEND_API_KEY
 
+def send_test_email():
+    params = {
+        "from": "onboarding@resend.dev",
+        "to": ["yourmail@gmail.com"],
+        "subject": "Workout Reminder",
+        "html": "<strong>Time for your workout today!</strong>"
+    }
 
+    email = resend.Emails.send(params)
+    print(email)
+def welcome_email(user_email):
+    resend.api_key = settings.RESEND_API_KEY
+
+    resend.Emails.send({
+        "from": "onboarding@resend.dev",
+        "to": [user_email],
+        "subject": "Welcome to Healthy Body",
+        "html": "<h2>Your AI fitness journey starts now!</h2>"
+    })
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 def cron_trigger_mails(request):

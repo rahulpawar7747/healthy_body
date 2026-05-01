@@ -20,7 +20,7 @@ from dotenv import load_dotenv
 import dj_database_url
 
 load_dotenv()  
-
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 BASE_DIR = Path(__file__).resolve().parent.parent
 # GOOGLE_API_KEY = os.getenv("GEMINI_API_KEY")
 # EMAIL SETTINGS
