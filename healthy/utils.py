@@ -1,7 +1,30 @@
 from django.core.mail import EmailMultiAlternatives
 import markdown
+import resend
+from django.conf import settings
+
+
+# def send_health_mail(user, subject, html_message):
+#     if not user.email:
+#         print("NO EMAIL FOUND")
+#         return
+
+#     try:
+#         response = resend.Emails.send({
+#             "from": "onboarding@resend.dev",
+#             "to": user.email,
+#             "subject": subject,
+#             "html": html_message
+#         })
+
+#         print("EMAIL SENT SUCCESS:", response)
+
+#     except Exception as e:
+#         print("EMAIL ERROR:", str(e))
+
 def send_health_mail(user, subject, html_message):
     if not user.email:
+        print("NO EMAIL FOUND")
         return
 
     email = EmailMultiAlternatives(

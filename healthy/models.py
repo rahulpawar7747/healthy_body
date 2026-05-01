@@ -56,3 +56,12 @@ class UserExercise(models.Model):
 
     def __str__(self):
         return f"Exercise - {self.user.username}"
+
+
+class DietPlan(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    plan = models.TextField()
+
+class ExercisePlan(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    plan = models.TextField()

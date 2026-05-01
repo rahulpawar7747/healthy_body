@@ -13,20 +13,21 @@ from django.conf import settings
 import json
 import os
 import google.generativeai as genai
-from .models import UserDietPlan,BMIRecord,UserHealthPlan,DietSchedule,UserDiet,UserExercise
+from .models import UserDietPlan,BMIRecord,UserHealthPlan,DietSchedule,UserDiet,UserExercise,DietPlan, ExercisePlan
 import re
 from .models import HealthProgress
 from .utils import convert_table_to_html, send_health_mail
 from datetime import datetime, time
 from django.core.mail import send_mail  # ← jo tum already use karte ho
+# from .utils import send_plan_email
+from healthy.models import UserDiet, UserExercise
+from .utils import send_health_mail
+
+
 
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
-
-from healthy.models import UserDiet, UserExercise
-from .utils import send_health_mail
-
 def cron_trigger_mails(request):
         key = request.GET.get("key")
         user_id = request.GET.get("uid")
@@ -54,28 +55,13 @@ def cron_trigger_mails(request):
             <pre>{ex_obj.exercise_reply}</pre>
             """
 
-            send_health_mail(user, "🎉 Your AI Health Plan", html_message)
+        # after html_message creation
+            if request.user.email:
+                send_health_mail(request.user, "🎉 Your AI Health Plan", html_message)
+            else:
+                print("NO EMAIL FOUND FOR USER")
 
         return HttpResponse(f"Mail sent to {user.email}")
-
-def send_scheduled_emails(request):
-    # simple security key
-    key = request.GET.get("key")
-    if key != "MY_SECRET_123":
-        return HttpResponse("Unauthorized", status=401)
-
-    for user in User.objects.all():
-        if user.email:
-            send_mail(
-                "Your Diet & Exercise Plan",
-                "Hello! This is your scheduled reminder.",
-                settings.EMAIL_HOST_USER,
-                [user.email],
-                fail_silently=False,
-            )
-
-    return HttpResponse("Emails sent")
-
 
 
 @login_required(login_url='login')
@@ -194,8 +180,8 @@ def aiapp_view(request):
 
         today = datetime.now().strftime("%d %b %Y")
 
-        # diet_html = convert_table_to_html(diet_part)
-        # exercise_html = convert_table_to_html(exercise_part)
+        diet_html = convert_table_to_html(diet_part)
+        exercise_html = convert_table_to_html(exercise_part)
 
         html_message = f"""
         <html>
@@ -247,7 +233,18 @@ def aiapp_view(request):
         </html>
         """
 
-    send_health_mail(request.user, "🎉 Your AI Health Plan", html_message)
+    # after html_message creation
+
+        try:
+            send_health_mail(
+                request.user,
+                "🎉 Your AI Health Plan",
+                html_message
+            )
+            print("EMAIL TRIGGERED SUCCESSFULLY")
+
+        except Exception as e:
+            print("EMAIL FAILED:", str(e))
 
 
 
@@ -303,7 +300,7 @@ def exercise_view(request):
 # @login_required
 # def diet_page(request):
 #     diet = DietPlan.objects.filter(user=request.user).first()
-#     return render(request, "Diet.html", {"diet": diet})
+#     return render(request, "Diet.html", {"diet": diet})~
 # @login_required
 # def exercise_page(request):
 #     exercise = ExercisePlan.objects.filter(user=request.user).first()
