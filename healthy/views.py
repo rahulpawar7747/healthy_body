@@ -79,8 +79,8 @@ def aiapp_view(request):
         if existing_diet and existing_ex:
                 today = datetime.now().strftime("%d %b %Y")
 
-                diet_html = convert_table_to_html(diet_part)
-                exercise_html = convert_table_to_html(exercise_part)
+                diet_html = convert_table_to_html(existing_diet.diet_reply)
+                exercise_html = convert_table_to_html(existing_ex.exercise_reply)
 
                 html_message = f"""
                 <html>
