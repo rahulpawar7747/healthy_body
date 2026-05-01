@@ -29,7 +29,7 @@ def send_health_mail(user, subject, html_message):
     email = EmailMultiAlternatives(
         subject=subject,
         body="Your health plan is ready.",   # plain fallback text
-        from_email="rahulrajput7747@gmail.com",    # yaha apna sender email likho
+        from_email=settings.DEFAULT_FROM_EMAIL,    # yaha apna sender email likho
         to=[user.email]
     )
 

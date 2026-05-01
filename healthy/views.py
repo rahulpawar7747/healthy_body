@@ -18,34 +18,15 @@ import re
 from .models import HealthProgress
 from .utils import convert_table_to_html, send_health_mail
 from datetime import datetime, time
-from django.core.mail import send_mail  # ← jo tum already use karte ho
+# from django.core.mail import send_mail  # ← jo tum already use karte ho
 # from .utils import send_plan_email
 from healthy.models import UserDiet, UserExercise
-from .utils import send_health_mail
-import resend
 
 
-resend.api_key = settings.RESEND_API_KEY
 
-def send_test_email():
-    params = {
-        "from": "onboarding@resend.dev",
-        "to": ["yourmail@gmail.com"],
-        "subject": "Workout Reminder",
-        "html": "<strong>Time for your workout today!</strong>"
-    }
 
-    email = resend.Emails.send(params)
-    print(email)
-def welcome_email(user_email):
-    resend.api_key = settings.RESEND_API_KEY
 
-    resend.Emails.send({
-        "from": "onboarding@resend.dev",
-        "to": [user_email],
-        "subject": "Welcome to Healthy Body",
-        "html": "<h2>Your AI fitness journey starts now!</h2>"
-    })
+
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 def cron_trigger_mails(request):
@@ -76,10 +57,10 @@ def cron_trigger_mails(request):
             """
 
         # after html_message creation
-            if request.user.email:
-                send_health_mail(request.user, "🎉 Your AI Health Plan", html_message)
-            else:
-                print("NO EMAIL FOUND FOR USER")
+            # if user.email:
+            send_health_mail(user, "🎉 Your AI Health Plan", html_message)
+            # else:
+            #     print("NO EMAIL FOUND FOR USER")
 
         return HttpResponse(f"Mail sent to {user.email}")
 
@@ -96,11 +77,78 @@ def aiapp_view(request):
         existing_ex = UserExercise.objects.filter(user=request.user).first()
 
         if existing_diet and existing_ex:
-            return JsonResponse({
-                "diet": existing_diet.diet_reply,
-                "exercise": existing_ex.exercise_reply,
-                "from_db": True
-            })
+                today = datetime.now().strftime("%d %b %Y")
+
+                diet_html = convert_table_to_html(diet_part)
+                exercise_html = convert_table_to_html(exercise_part)
+
+                html_message = f"""
+                <html>
+                <head>
+                <style>
+                    body {{
+                        font-family: Arial, sans-serif;
+                    }}
+                    .card {{
+                        max-width:700px;
+                        margin:auto;
+                        padding:15px;
+                    }}
+                    table {{
+                        width:100%;
+                        border-collapse:collapse;
+                    }}
+                    th, td {{
+                        border:1px solid #444;
+                        padding:8px;
+                        text-align:center;
+                        font-size:14px;
+                    }}
+                    h2 {{
+                        background:#4CAF50;
+                        color:white;
+                        padding:10px;
+                    }}
+                </style>
+                </head>
+                <body>
+
+                <div class="card">
+
+                <h1 style="text-align:center">🎉 Your AI Health Plan</h1>
+                <p style="text-align:center;color:gray">{today}</p>
+
+                <h2>🥗 Diet Plan</h2>
+                {diet_html}
+
+                <br><br>
+
+                <h2>💪 Exercise Plan</h2>
+                {exercise_html}
+
+                </div>
+
+                </body>
+                </html>
+                """
+
+            # after html_message creation
+
+                try:
+                    send_health_mail(
+                        request.user,
+                        "🎉 Your AI Health Plan",
+                        html_message
+                    )
+                    print("EMAIL TRIGGERED SUCCESSFULLY")
+
+                except Exception as e:
+                    print("EMAIL FAILED:", str(e))
+                return JsonResponse({
+                    "diet": existing_diet.diet_reply,
+                    "exercise": existing_ex.exercise_reply,
+                    "from_db": True
+                })
 
         bmi = request.session.get("bmi", "")
         status = request.session.get("status", "")
@@ -198,73 +246,73 @@ def aiapp_view(request):
 )
 
 
-        today = datetime.now().strftime("%d %b %Y")
+    #     today = datetime.now().strftime("%d %b %Y")
 
-        diet_html = convert_table_to_html(diet_part)
-        exercise_html = convert_table_to_html(exercise_part)
+    #     diet_html = convert_table_to_html(diet_part)
+    #     exercise_html = convert_table_to_html(exercise_part)
 
-        html_message = f"""
-        <html>
-        <head>
-        <style>
-            body {{
-                font-family: Arial, sans-serif;
-            }}
-            .card {{
-                max-width:700px;
-                margin:auto;
-                padding:15px;
-            }}
-            table {{
-                width:100%;
-                border-collapse:collapse;
-            }}
-            th, td {{
-                border:1px solid #444;
-                padding:8px;
-                text-align:center;
-                font-size:14px;
-            }}
-            h2 {{
-                background:#4CAF50;
-                color:white;
-                padding:10px;
-            }}
-        </style>
-        </head>
-        <body>
+    #     html_message = f"""
+    #     <html>
+    #     <head>
+    #     <style>
+    #         body {{
+    #             font-family: Arial, sans-serif;
+    #         }}
+    #         .card {{
+    #             max-width:700px;
+    #             margin:auto;
+    #             padding:15px;
+    #         }}
+    #         table {{
+    #             width:100%;
+    #             border-collapse:collapse;
+    #         }}
+    #         th, td {{
+    #             border:1px solid #444;
+    #             padding:8px;
+    #             text-align:center;
+    #             font-size:14px;
+    #         }}
+    #         h2 {{
+    #             background:#4CAF50;
+    #             color:white;
+    #             padding:10px;
+    #         }}
+    #     </style>
+    #     </head>
+    #     <body>
 
-        <div class="card">
+    #     <div class="card">
 
-        <h1 style="text-align:center">🎉 Your AI Health Plan</h1>
-        <p style="text-align:center;color:gray">{today}</p>
+    #     <h1 style="text-align:center">🎉 Your AI Health Plan</h1>
+    #     <p style="text-align:center;color:gray">{today}</p>
 
-        <h2>🥗 Diet Plan</h2>
-        {diet_html}
+    #     <h2>🥗 Diet Plan</h2>
+    #     {diet_html}
 
-        <br><br>
+    #     <br><br>
 
-        <h2>💪 Exercise Plan</h2>
-        {exercise_html}
+    #     <h2>💪 Exercise Plan</h2>
+    #     {exercise_html}
 
-        </div>
+    #     </div>
 
-        </body>
-        </html>
-        """
+    #     </body>
+    #     </html>
+    #     """
 
-    # after html_message creation
+    # # after html_message creation
 
-        try:
-            send_health_mail(
-                request.user,
-                "🎉 Your AI Health Plan",
-                html_message
-            )
-            print("EMAIL TRIGGERED SUCCESSFULLY")
+    #     try:
+    #         send_health_mail(
+    #             request.user,
+    #             "🎉 Your AI Health Plan",
+    #             html_message
+    #         )
+    #         print("EMAIL TRIGGERED SUCCESSFULLY")
 
-        except Exception as e:
-            print("EMAIL FAILED:", str(e))
+    #     except Exception as e:
+    #         print("EMAIL FAILED:", str(e))
 
 
 
