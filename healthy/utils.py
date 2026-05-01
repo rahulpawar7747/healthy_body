@@ -26,19 +26,23 @@ def send_health_mail(user, subject, html_message):
         print("NO EMAIL FOUND")
         return
 
-    email = EmailMultiAlternatives(
-        subject=subject,
-        body="Your health plan is ready.",   # plain fallback text
-        from_email=settings.DEFAULT_FROM_EMAIL,    # yaha apna sender email likho
-        to=[user.email]
-    )
-
-    # IMPORTANT: HTML attach karna zaroori hai
-    email.attach_alternative(html_message, "text/html")
     try:
+        html_content = markdown.markdown(html_message)
+
+        email = EmailMultiAlternatives(
+            subject,
+            html_message,
+            settings.EMAIL_HOST_USER,
+            [user.email]
+        )
+
+        email.attach_alternative(html_content, "text/html")
         email.send()
+
+        print("EMAIL SENT SUCCESS")
+
     except Exception as e:
-        print("Email failed:", e)
+        print("EMAIL ERROR:", str(e))
 
 def convert_table_to_html(text):
     html = markdown.markdown(text, extensions=["tables"])

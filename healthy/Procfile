@@ -1,1 +1,0 @@
-web: gunicorn healthy_body.wsgi:application
