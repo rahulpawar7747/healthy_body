@@ -113,7 +113,7 @@ input:focus{
 button{
     margin-top: 50px;
     width: 100%;
-    background-color:black;
+    background-color:#4facfe;
     color: white;
     padding: 15px 0;
     font-size: 18px;
@@ -197,7 +197,7 @@ button:hover{
 
 /* Hover state */
 .navbar .nav-link:hover {
-    color: #00c3ff9f !important;
+    color: oklch(76.463% 0.15148 229.462 / 0.624) !important;
 }
 
 /* Optional: Style for the "Healthy Body" brand name on the left */
