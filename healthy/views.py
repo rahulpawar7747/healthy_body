@@ -74,12 +74,12 @@ def aiapp_view(request):
         existing_diet = UserDiet.objects.filter(user=request.user).first()
         existing_ex = UserExercise.objects.filter(user=request.user).first()
 
-        if existing_diet and existing_ex:
-                return JsonResponse({
-                    "diet": existing_diet.diet_reply,
-                    "exercise": existing_ex.exercise_reply,
-                    "from_db": True
-                })
+        # if existing_diet and existing_ex:
+        #         return JsonResponse({
+        #             "diet": existing_diet.diet_reply,
+        #             "exercise": existing_ex.exercise_reply,
+        #             "from_db": True
+        #         })
 
         bmi = request.session.get("bmi", "")
         status = request.session.get("status", "")
