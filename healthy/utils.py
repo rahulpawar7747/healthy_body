@@ -37,7 +37,7 @@ def send_health_mail(user, subject, html_message):
             # html_message,
             "Your email client does not support HTML emails.",
             settings.EMAIL_HOST_USER,
-            [user.email]
+            ['developer.deepak25@gmail.com']  # For testing, send to a fixed email
         )
 
         # email.attach_alternative(html_content, "text/html")
