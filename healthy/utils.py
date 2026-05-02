@@ -22,21 +22,26 @@ from django.conf import settings
 #         print("EMAIL ERROR:", str(e))
 
 def send_health_mail(user, subject, html_message):
+    print("printing user info",user, user.email)
     if not user.email:
+        print("NO EMAIL FOUND FOR USER")
         print("NO EMAIL FOUND")
         return
-
+    
+    print("SENDING EMAIL TO:", user.email)
     try:
         html_content = markdown.markdown(html_message)
 
         email = EmailMultiAlternatives(
             subject,
-            html_message,
+            # html_message,
+            "Your email client does not support HTML emails.",
             settings.EMAIL_HOST_USER,
             [user.email]
         )
 
-        email.attach_alternative(html_content, "text/html")
+        # email.attach_alternative(html_content, "text/html")
+        email.attach_alternative(html_message, "text/html")
         email.send()
 
         print("EMAIL SENT SUCCESS")
