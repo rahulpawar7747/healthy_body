@@ -230,7 +230,6 @@ def aiapp_view(request):
         try:
             print("Triggering email to:", request.user.email, request, request.user) # for debugging
             # hardcore email for testing
-            request.user.email = "developer.deepak25@gmail.com"
             send_health_mail(
                 request.user,
                 "🎉 Your AI Health Plan",
